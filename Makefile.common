@@ -1,0 +1,410 @@
+
+ifndef TOOL
+#TOOL	= arm-none-eabi-
+#TOOL	= /opt/Sourcery_gcc/bin/arm-none-eabi-
+TOOL	= /opt/Sourcery_gcc-4.6.3/bin/arm-none-eabi-
+#TOOL	= /opt/arm-kgp-eabi/bin/arm-kgp-eabi-
+#	TOOL	= arm-kgp-eabi-
+endif
+
+###########################################################
+#  common part for all my cortex-m3 projects
+###########################################################
+
+CC			= $(TOOL)gcc
+CXX			= $(TOOL)g++
+LD			= $(TOOL)g++
+GDB			= $(TOOL)gdb
+AR			= $(TOOL)ar
+AS			= $(CC) -x assembler-with-cpp
+OBJCOPY	= $(TOOL)objcopy
+OBJDUMP	= $(TOOL)objdump
+SIZE		= $(TOOL)size -d
+
+RM			= rm -f
+CP			= cp
+MD			= mkdir
+
+PROJECT_BASE		:= $(shell pwd)
+
+
+#  dirs
+OBJDIR		= $(PROJECT_BASE)/objs
+EXEDIR		= $(PROJECT_BASE)/exe
+LSTDIR		= $(PROJECT_BASE)/list
+
+RESOURCEDIR		= $(TOPDIR)/Resources
+
+#files
+HEX		= $(EXEDIR)/$(TARGET).hex
+ELF		= $(EXEDIR)/$(TARGET).elf
+MAP		= $(LSTDIR)/$(TARGET).map
+LSS		= $(LSTDIR)/$(TARGET).lss
+OK		= $(EXEDIR)/$(TARGET).ok
+
+ifdef PROJECT_SRC
+	INCLUDES	:= $(foreach entry, ${PROJECT_SRC}, -I$(PROJECT_BASE)/$(entry) )
+	DIRS	    := $(foreach entry, ${PROJECT_SRC}, $(PROJECT_BASE)/$(entry) )
+else
+	INCLUDES	:= -I$(PROJECT_BASE)
+	DIRS	    := $(PROJECT_BASE)/.
+endif
+
+ifdef PROJECT_INCLUDES
+	INCLUDES	+= $(foreach entry, ${PROJECT_INCLUDES}, -I$(PROJECT_BASE)/$(entry) )
+endif
+
+VPATH	+= $(TOPDIR)/Framework/Startup
+VPATH	+= $(TOPDIR)/Framework/Utils
+
+SRCS	+= startup_gcc.c vectors.c
+
+
+# processor family 
+# STM32F10X_LD: STM32 Low density devices
+# STM32F10X_MD: STM32 Medium density devices
+# STM32F10X_HD: STM32 High density devices
+# STM32F10X_CL: STM32 Connectivity line devices
+#CHIP		= STM32F10X_LD
+#CHIP		= STM32F10X_LD_VL
+
+BOARD_FLAFS =
+
+ifeq ($(BOARD),DISCOVERY_VL)
+	CHIP = STM32F10X_LD_VL
+	MCU	= cortex-m3
+
+	INCLUDES += -I$(TOPDIR)/Boards/STM32VL_EVAL
+	VPATH += $(TOPDIR)/Boards/STM32VL_EVAL
+
+	ifdef USE_STM_PERIF_LIB
+		INCLUDES += -I$(TOPDIR)/Boards/STM32VL_EVAL/STM
+		VPATH += $(TOPDIR)/Boards/STM32VL_EVAL/STM
+		# individual source files
+		SRCS	+= STM32vldiscovery.c
+	endif
+else
+	ifeq ($(BOARD),STM3210C)
+		CHIP = STM32F10X_CL
+		MCU	= cortex-m3
+
+		BOARD_FLAFS += -DUSE_STM3210C_EVAL
+
+		INCLUDES += -I$(TOPDIR)/Boards/STM3210C_EVAL
+		VPATH += $(TOPDIR)/Boards/STM3210C_EVAL
+		#
+		# individual source files
+		SRCS	+= board_io.cpp
+
+		ifdef USE_STM_PERIF_LIB
+			INCLUDES += -I$(TOPDIR)/Boards/STM3210C_EVAL/STM
+			VPATH += $(TOPDIR)/Boards/STM3210C_EVAL/STM
+			# individual source files
+			SRCS	+= stm32_eval.c
+#			SRCS	+= stm3210c_eval_lcd.c stm3210c_eval_ioe.c stm32_eval_spi_sd.c
+#			stm32_eval_i2c_tsensor.c  stm32_eval_spi_flash.c  stm32_eval_sdio_sd.c  stm32_eval_i2c_ee.c
+		endif
+	else
+		ifeq ($(BOARD),DISCOVERY_F4)
+			CHIP = STM32F4
+			MCU	= cortex-m4
+			PROJECT_FLAGS += -DHSE_VALUE=8000000
+
+			INCLUDES += -I$(TOPDIR)/Boards/STM32F4_EVAL
+			VPATH += $(TOPDIR)/Boards/STM32F4_EVAL
+
+			ifdef USE_STM_PERIF_LIB
+				INCLUDES += -I$(TOPDIR)/Boards/STM32F4_EVAL/STM
+				VPATH += $(TOPDIR)/Boards/STM32F4_EVAL/STM
+				# individual source files
+				SRCS	+= stm32f4_discovery.c
+				#stm32f4_discovery_audio_codec.c stm32f4_discovery_lis302dl.c
+			endif
+		else
+			error "Board is not defined"
+		endif
+	endif
+endif
+
+
+ifdef USART_RETARGET
+SRCS	+= printf-stdarg.c
+SRCS	+= usart.c
+endif
+
+
+# flags
+FLAGS	= -mcpu=$(MCU) -mlittle-endian -mthumb -mthumb-interwork 
+FLAGS	+= -Wa,-gdwarf-2
+FLAGS	+= $(INCLUDES)
+FLAGS	+= -MD 
+FLAGS	+= -D$(CHIP)
+#FLAGS	+= -ggdb
+#FLAGS	+= -g
+FLAGS	+= $(PROJECT_FLAGS)
+
+ifeq ($(MCU),cortex-m3)
+	# includes
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/CM3/CoreSupport
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x
+
+	# source directories (all *.c, *.cpp and *.S files included)
+	DIRS += $(TOPDIR)/Libraries/CMSIS/CM3/CoreSupport
+	DIRS += $(TOPDIR)/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x
+else
+	# includes
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Include
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/ST/STM32F4xx/Include
+
+	DIRS += $(TOPDIR)/Libraries/CMSIS/ST/STM32F4xx/Source
+
+	ifdef HARD_FLOAT
+		FLAGS += -fsingle-precision-constant -Wdouble-promotion
+		FLAGS += -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+		PROJECT_LDFLAGS += -fsingle-precision-constant -Wdouble-promotion
+		PROJECT_LDFLAGS += -mfpu=fpv4-sp-d16 -mfloat-abi=hard
+	else
+		FLAGS + = -msoft-float
+		PROJECT_LDFLAGS + = -msoft-float
+	endif
+endif
+
+
+ifdef PROJECT_WARNINGS
+	WARNINGS = $(PROJECT_WARNINGS)
+else
+	WARNINGS	= -Wall -Wextra -pedantic
+	WARNINGS	+=  -Wcast-align -Wpointer-arith -Wredundant-decls
+#-Wimplicit
+	WARNINGS	+= -Wshadow -Wcast-qual -Wcast-align
+endif
+
+CWARNINGS 	= -Wnested-externs
+CXXWARNINGS	= -Winline -finline-limit=40
+
+BASEFLAGS = $(FLAGS)
+
+ifdef USE_STM_PERIF_LIB
+	ifeq ($(MCU),cortex-m3)
+		INCLUDES += -I$(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/inc
+#		DIRS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/src
+		LIBS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/STM32F10x_StdPeriphLib.a
+
+		BASEFLAGS += -include stm32f10x_conf.h
+	else
+		INCLUDES += -I$(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/inc
+#		DIRS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/src
+		ifdef HARD_FLOAT
+			LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibHard.a
+		else
+			LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibSoft.a
+		endif
+
+		BASEFLAGS += -include stm32f4xx_conf.h
+	endif
+endif
+
+ifdef USE_USB
+	ifeq ($(MCU),cortex-m3)
+	else
+		INCLUDES += -I$(TOPDIR)/Libraries/STM32_USB_Device_Library/Core/inc
+		INCLUDES += -I$(TOPDIR)/Libraries/STM32_USB_OTG_Driver/inc
+
+		VPATH += $(TOPDIR)/Libraries/STM32_USB_Device_Library/Class/hid/src
+		VPATH += $(TOPDIR)/Libraries/STM32_USB_Device_Library/Core/src
+		VPATH += $(TOPDIR)/Libraries/STM32_USB_OTG_Driver/src
+	endif
+endif
+
+ifdef RTOS
+	ifeq ($(RTOS),scmRTOS)
+		# scmRTOS dir
+		SCMDIR		= $(TOPDIR)/RTOS/scmRTOS
+
+		# source directories (all *.c, *.cpp and *.S files included)
+		DIRS	+= $(SCMDIR)/Common
+		DIRS	+= $(SCMDIR)/Extensions/Profiler
+
+		INCLUDES += -I$(SCMDIR)/Common
+		INCLUDES += -I$(SCMDIR)/Extensions/Profiler
+
+		ifeq ($(MCU),cortex-m3)
+			DIRS	+= $(SCMDIR)/CortexM3
+			INCLUDES += -I$(SCMDIR)/CortexM3
+		else
+			DIRS	+= $(SCMDIR)/CortexM4F
+			INCLUDES += -I$(SCMDIR)/CortexM4F
+		endif
+
+#		BASEFLAGS += -DPendSVC_ISR=PendSV_Handler -DSystemTimer_ISR=SysTick_Handler
+		BASEFLAGS += -DSCMRTOS
+	endif
+
+	ifeq ($(RTOS),FreeRTOS)
+		# FreeRTOS dir
+		FREERTOS_DIR		= $(TOPDIR)/RTOS/FreeRTOS
+
+		# source directories (all *.c, *.cpp and *.S files included)
+		DIRS	+= $(FREERTOS_DIR)
+		INCLUDES += -I$(FREERTOS_DIR)/include
+
+		ifeq ($(MCU),cortex-m3)
+			INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3
+			DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM3
+		else
+			ifdef HARD_FLOAT
+				INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM4F
+				DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM4F
+			else
+				INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3
+				DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM3
+			endif
+		endif
+
+		BASEFLAGS += -DFREERTOS
+	endif
+endif
+
+# linker script (chip dependent)
+ifeq ($(START_FROM_RAM),1)
+	BASEFLAGS += -DVECT_TAB_SRAM
+	LD_SCRIPT	= $(RESOURCEDIR)/$(CHIP)_RAM.ld
+else
+	LD_SCRIPT	= $(RESOURCEDIR)/$(CHIP).ld
+endif
+
+ifdef LIBRARY
+	SRCS =
+	DIRS = src
+endif
+
+####################################### FRAMEWORK START ####################################
+INCLUDES += -I$(TOPDIR)/Framework
+INCLUDES += -I$(TOPDIR)/Framework/IO
+INCLUDES += -I$(TOPDIR)/Framework/Utils
+####################################### FRAMEWORK END   ####################################
+
+VPATH += $(DIRS)
+
+#calc obj files list
+OBJS	:= $(SRCS)
+OBJS	+= $(wildcard $(addsuffix /*.cpp, $(DIRS)))
+OBJS	+= $(wildcard $(addsuffix /*.c, $(DIRS)))
+OBJS	+= $(wildcard $(addsuffix /*.S, $(DIRS)))
+OBJS	:= $(notdir $(OBJS))
+OBJS	:= $(OBJS:.cpp=.o)
+OBJS	:= $(OBJS:.c=.o)
+OBJS	:= $(OBJS:.S=.o)
+OBJS	:= $(patsubst %, $(OBJDIR)/%, $(OBJS))
+
+
+AFLAGS	= $(FLAGS)
+AFLAGS	+= -Wa,-adhlns=$(addprefix $(LSTDIR)/, $(notdir $(addsuffix .lst, $(basename $<))))
+
+CFLAGS	= $(BASEFLAGS) $(BOARD_FLAFS)
+CFLAGS	+= $(OPTIMIZE)
+CFLAGS	+= -std=gnu99
+CFLAGS	+= -ffunction-sections -fdata-sections
+CFLAGS	+= $(WARNINGS) $(CWARNINGS) $(PROJECT_CWARNINGS)
+CFLAGS	+= -Wa,-adhlns=$(addprefix $(LSTDIR)/, $(notdir $(addsuffix .lst, $(basename $<))))
+
+CXXFLAGS	= $(BASEFLAGS)  $(BOARD_FLAFS)
+CXXFLAGS	+= $(OPTIMIZE)
+CXXFLAGS	+= -fomit-frame-pointer
+CXXFLAGS	+= -fno-exceptions -fno-rtti
+CXXFLAGS	+= -ffunction-sections -fdata-sections
+CXXFLAGS	+= -fno-elide-constructors
+CXXFLAGS	+= -funsigned-bitfields -fshort-enums
+CXXFLAGS	+= $(WARNINGS) $(CXXWARNINGS) $(PROJECT_CXXWARNINGS)
+CXXFLAGS	+= -Wa,-adhlns=$(addprefix $(LSTDIR)/, $(notdir $(addsuffix .lst, $(basename $<))))
+
+LD_FLAGS	= -mcpu=$(MCU)
+LD_FLAGS	+= -mlittle-endian -mthumb -mthumb-interwork
+LD_FLAGS	+= $(PROJECT_LDFLAGS)
+LD_FLAGS	+= -Wl,-Map="$(MAP)",--cref
+LD_FLAGS	+= -fno-exceptions -fno-rtti	
+LD_FLAGS	+= -Wl,--gc-sections
+LD_FLAGS	+= -T$(LD_SCRIPT)
+
+
+.SILENT :
+
+.PHONY: all dirs build clean flash run
+
+############# targets
+
+all : dirs $(ELF) $(HEX) $(LSS) $(OK)
+
+build: clean all
+
+lib : $(LIBRARY)
+
+$(LSS): $(ELF) Makefile
+	@echo --- making asm-lst...
+#	@$(OBJDUMP) -dStC $(ELF) > $(LSS)
+	@$(OBJDUMP) -dC $(ELF) > $(LSS)
+
+$(OK): $(ELF)
+	@$(SIZE) $(ELF)
+	@echo "Errors: none"
+
+$(ELF):	$(OBJS) Makefile
+	@echo --- linking...
+	$(LD) $(OBJS) $(LD_FLAGS) $(LIBS) -o "$(ELF)"
+
+$(LIBRARY): $(OBJS) Makefile
+	@echo --- linking library ...
+	$(AR) -r $(LIBRARY) $(OBJS) 
+
+$(HEX): $(ELF)
+	@echo --- make hex...
+	@$(OBJCOPY) -O ihex $(ELF) $(HEX)
+
+flash: $(HEX)
+	@echo "Programming with stm32flash"
+	stm32flash -w $(HEX) -v -g 0x0 /dev/ttyS0
+
+
+$(OBJDIR)/%.o: %.cpp
+	@echo --- compiling $(*F).cpp
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o: %.c
+	@echo --- compiling $(*F).c
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o: %.S
+	@echo --- assembling $(*F).S
+	$(AS) -c $(AFLAGS) -o $@ $<
+
+dirs: $(OBJDIR) $(EXEDIR) $(LSTDIR)
+
+$(OBJDIR):
+	-@$(MD) $(OBJDIR)
+
+$(EXEDIR):
+	-@$(MD) $(EXEDIR)
+
+$(LSTDIR):
+	-@$(MD) $(LSTDIR)
+
+clean:
+	-@$(RM) $(OBJDIR)/*.d 2>/dev/null
+	-@$(RM) $(OBJDIR)/*.o 2>/dev/null
+	-@$(RM) $(EXEDIR)/*.hex 2>/dev/null
+	-@$(RM) $(EXEDIR)/*.bin 2>/dev/null
+	-@$(RM) $(EXEDIR)/*.elf 2>/dev/null
+	-@$(RM) $(LSTDIR)/*.lst 2>/dev/null
+	-@$(RM) $(LSTDIR)/*.lss 2>/dev/null
+	-@$(RM) $(LSTDIR)/*.map 2>/dev/null
+
+cleanall: clean
+	rmdir $(OBJDIR)
+	rmdir $(EXEDIR)
+	rmdir $(LSTDIR)
+
+run: $(ELF)
+	$(GDB) -x $(RESOURCEDIR)/stlink.gdb $(ELF)
+
+# dependencies
+include $(wildcard $(OBJDIR)/*.d) 
