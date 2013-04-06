@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- headlinks removed -->
+	<link rel="shortcut icon" href="../misc/favicon.ico"/>
+    <title>Tools - scmRTOS</title>
+    <style type="text/css">/*<![CDATA[*/ @import "../skins/offline/main.css"; /*]]>*/</style>
+    <link rel="stylesheet" type="text/css" media="print" href="../skins/common/commonPrint.css" />
+          </head>
+  <body
+    class="ns-4 ns-subject page-scmRTOS_About">
+    <div id="globalWrapper">
+      <div id="column-content">
+	<div id="content">
+	  <a name="top" id="contentTop"></a>
+	        <h1 class="firstHeading">Tools</h1>
+	  <div id="bodyContent">
+	    <h3 id="siteSub">From scmRTOS</h3>
+	    <div id="contentSub"></div>
+	    <!-- start content -->
+	    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head><meta http-equiv="content-type" content="charset=utf-8"></head>
+<body>
+<table id="toc" class="toc"><tr><td>
+<div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1">
+<a href="#scmRTOS_Integrity_Checker"><span class="tocnumber">1</span> <span class="toctext">scmRTOS Integrity Checker</span></a>
+<ul>
+<li class="toclevel-2 tocsection-2"><a href="#Abstract"><span class="tocnumber">1.1</span> <span class="toctext">Abstract</span></a></li>
+<li class="toclevel-2 tocsection-3"><a href="#DESCRIPTION"><span class="tocnumber">1.2</span> <span class="toctext">DESCRIPTION</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#USAGE"><span class="tocnumber">1.3</span> <span class="toctext">USAGE</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#USAGE_VARIANTS"><span class="tocnumber">1.4</span> <span class="toctext">USAGE VARIANTS</span></a></li>
+<li class="toclevel-2 tocsection-6"><a href="#DOWNLOAD"><span class="tocnumber">1.5</span> <span class="toctext">DOWNLOAD</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table>
+<script>if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script><h2> <span class="mw-headline" id="scmRTOS_Integrity_Checker"> scmRTOS Integrity Checker </span>
+</h2>
+<h3> <span class="mw-headline" id="Abstract"> Abstract </span>
+</h3>
+<p><span>The key features of the scmRTOS are max speed and min code/<span title="RAM: Random Access Memory" class="terminologydef" style="cursor:help">RAM</span> size requirements. To achieve these purposes the OS code has been written almost without runtime checks. Nevertheless, all OS parts are safe enough for the using. This became possible thanks to C++ programming language and its static strong typing. Unfortunately, programming language (and language tools such as compiler, linker) cannot control OS integrity over separate compilation! Therefore, processes types definition, processes declaration and process count have to be checked manually (by user). But everyone knows that the user (a human) can be a forgetful, careless, etc. or be abstracted on his project and, thus, can make mistake. In any case, OS configuration and integrity checking is the job for appropriate tool.
+</span></p>
+<p>Integrity Checker utility is intended to free user from tedious and stupid job and, also, to improve checking quality.
+</p>
+<h3> <span class="mw-headline" id="DESCRIPTION"> DESCRIPTION </span>
+</h3>
+<p>Integrity Checker utility scans the project source directory (directories), reads and analyzes .h, .c and .cpp files. The utility carries out the following checks:
+</p>
+<ul>
+<li> Process count specified with macro scmRTOS_PROCESS_COUNT must agree with number of processes declared in the project.
+</li>
+<li> Process priorities must constitute unbroken sequence without "holes" and duplicates and the sequence must begin from pr0. For example, if we have declared 4 processes, these processes must have the following priority values: pr0, pr1, pr2, pr3.
+</li>
+<li> Two or more processes of the same type are not allowed. More than one process of the same type is valid thing in respect to the programming language but this is invalid for OS because each process must have its own process function. This process function is declared as static class member function, therefore, in case of two (or more) objects (processes) of the same type (class), these processes will share process function. In most cases this is error.
+</li>
+</ul>
+<p>If any of these checks not passed the tool issues the corresponding error.
+</p>
+<p>Note: Integrity Checker does NOT support preprocessor directives, so, for example, code:
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="cpp source-cpp"><pre class="de1"><span class="co2">#if 0</span>
+<span class="kw4">typedef</span> OS<span class="sy4">::</span><span class="me2">process</span><span class="sy1">&lt;</span>OS<span class="sy4">::</span><span class="me2">pr4</span>, <span class="nu0">768</span><span class="sy1">&gt;</span> TCommandProc<span class="sy4">;</span>
+<span class="co2">#endif</span></pre></div></div>
+<p>is not treated as comment. C/C++ comments are supported.
+</p>
+<h3> <span class="mw-headline" id="USAGE"> USAGE </span>
+</h3>
+<p>The tool is used in the following manner:
+</p>
+<pre> scmIC [options] DirName1 [DirName2 ... DirNameN]
+</pre>
+<p>Where scmIC is scmIC.py or scmIC.exe;
+</p>
+<p>options are:
+</p>
+<pre> -q - suppress output;
+ -s - show summary;
+ -r - recursive folder processing;
+</pre>
+<p><br><code>DirName1</code> [<code>DirName2</code> ... <code>DirNameN</code>] - absolute or relative path of directory with project sources.
+</p>
+<p>To proper working of the checker, the project must meet the following requirements:
+</p>
+<ul>
+<li> All process types must be defined with help of typedef.
+</li>
+<li> Process's root functions (Execs) must be qualified with macro OS_PROCESS.
+</li>
+</ul>
+<p>It's strongly recommended to launch the tool just after source files compiled and before (or after) linking of the project. The main reason to use the integrity checker after compilation of sources is that the checker does not perform full parsing of the source files (such as compiler does) and in case of some syntax errors in the source files the checker can work incorrectly. To avoid this the compiler should be launched before the checker. For example, assume we have project with 3 sources located in directory %PROJECT%Src. We can build the project in the following way:
+</p>
+<pre> compiler_executable compiler_options %PROJECT%\Src\file1.cpp
+ compiler_executable compiler_options %PROJECT%\Src\file2.cpp
+ compiler_executable compiler_options %PROJECT%\Src\file3.cpp
+ 
+ scmIC %PROJECT%\Src
+ 
+ linker_executable linker_options file1.obj file2.obj file3.obj
+</pre>
+<p>When using of make utility for project building the integrity checker can be placed as the command in explicit rule which performs project building before linking command, for example (GNU make):
+</p>
+<div dir="ltr" class="mw-geshi" style="text-align: left;"><div class="make source-make"><pre class="de1"><span class="sy0">$</span><span class="br0">(</span><span class="re2">target</span><span class="br0">)</span> <span class="sy0">:</span> <span class="sy0">$</span><span class="br0">(</span><span class="re2">all_obj</span><span class="br0">)</span>
+    <span class="sy0">@</span>scmIC<span class="sy0">.</span>exe <span class="sy0">$</span><span class="br0">(</span><span class="re2">SRC_DIR</span><span class="br0">)</span>
+    <span class="sy0">@$</span><span class="br0">(</span><span class="re2">LINK</span><span class="br0">)</span> <span class="sy0">$</span><span class="br0">(</span><span class="re2">all_obj</span><span class="br0">)</span> <span class="sy0">$</span><span class="br0">(</span><span class="re2">LFLAGS</span><span class="br0">)</span></pre></div></div>
+<h3> <span class="mw-headline" id="USAGE_VARIANTS"> USAGE VARIANTS </span>
+</h3>
+<p>There are two variants of usage.
+</p>
+<p>Primarily, scmRTOS Integrity Checker is Python script. So, to use script the user has to install Python interpreter. Just launch <code>scmIC.py</code> as described above.
+</p>
+<p>Since far not all users have Python interpreter installed and do not want to install it, another way of usage is offered. In this case Python script is converted in executable <code>scmIC.exe</code> and launched as usual exe file.
+</p>
+<h3> <span class="mw-headline" id="DOWNLOAD"> DOWNLOAD </span>
+</h3>
+<p>All files can be downloaded from <a href="http://sourceforge.net/projects/scmrtos/files/" class="external text" rel="nofollow">Project Download Page</a>:
+</p>
+<ul>
+<li> scmIC.py is placed in scmIC.py.zip archive.
+</li>
+<li> scmIC.exe is placed in scmIC.exe.zip archive.
+</li>
+</ul>
+</body>
+</html>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 40/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+<div class="printfooter">
+</div>
+	    <div id="catlinks"><div id='catlinks' class='catlinks catlinks-allhidden'></div></div>	    <!-- end content -->
+	    <div class="visualClear"></div>
+	  </div>
+	</div>
+      </div>
+      <div id="column-one">
+	<div class="portlet" id="p-logo">
+	  <a style="background-image: url(../misc/scmrtos.png);"
+	    href="../index.html"
+	    title="ScmRTOS"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+		<div class='portlet' id='p-navigation'>
+	  <h5>Navigation</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Home"><a href="../index.html">Home</a></li>
+	     	      <li id="n-Ports"><a href="../articles/Ports.html">Ports</a></li>
+	     	      <li id="n-Releases"><a href="../articles/Releases.html">Releases</a></li>
+	     	      <li id="n-Documentation"><a href="../articles/Documentation.html">Documentation</a></li>
+	     	      <li id="n-Tools"><a href="../articles/Tools.html">Tools</a></li>
+	     	      <li id="n-currentevents"><a href="../articles/scmRTOS%7ECurrent_events.html">Current events</a></li>
+	     	      <li id="n-Team"><a href="../articles/Team.html">Team</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-support'>
+	  <h5>support</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-help"><a href="../articles/Help%7EContents.html">Help</a></li>
+	     	      <li id="n-Browse-Subversion-repository"><a href="http://scmrtos.svn.sourceforge.net/viewvc/scmrtos/">Browse Subversion repository</a></li>
+	     	      <li id="n-Downloads"><a href="http://sourceforge.net/projects/scmrtos/files/">Downloads</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-development'>
+	  <h5>development</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Bug-tracker"><a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=181958&amp;atid=899286">Bug tracker</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		      </div><!-- end of the left (by default at least) column -->
+      <div class="visualClear"></div>
+      <div id="footer">
+		  	  	  <li id="f-about"><a href="../articles/scmRTOS%7EAbout.html" title="scmRTOS:About">About scmRTOS</a></li>	  	  	</ul>
+      </div>
+    </div>
+  </body>
+</html>

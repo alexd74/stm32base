@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- headlinks removed -->
+	<link rel="shortcut icon" href="../misc/favicon.ico"/>
+    <title>AVR IAR Release - scmRTOS</title>
+    <style type="text/css">/*<![CDATA[*/ @import "../skins/offline/main.css"; /*]]>*/</style>
+    <link rel="stylesheet" type="text/css" media="print" href="../skins/common/commonPrint.css" />
+          </head>
+  <body
+    class="ns-4 ns-subject page-scmRTOS_About">
+    <div id="globalWrapper">
+      <div id="column-content">
+	<div id="content">
+	  <a name="top" id="contentTop"></a>
+	        <h1 class="firstHeading">AVR IAR Release</h1>
+	  <div id="bodyContent">
+	    <h3 id="siteSub">From scmRTOS</h3>
+	    <div id="contentSub"></div>
+	    <!-- start content -->
+	    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head><meta http-equiv="content-type" content="charset=utf-8"></head>
+<body>
+<table id="toc" class="toc"><tr><td>
+<div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#General"><span class="tocnumber">1</span> <span class="toctext">General</span></a></li>
+<li class="toclevel-1 tocsection-2">
+<a href="#Building"><span class="tocnumber">2</span> <span class="toctext">Building</span></a>
+<ul>
+<li class="toclevel-2 tocsection-3"><a href="#Assembler"><span class="tocnumber">2.1</span> <span class="toctext">Assembler</span></a></li>
+<li class="toclevel-2 tocsection-4"><a href="#Compiler"><span class="tocnumber">2.2</span> <span class="toctext">Compiler</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#Linker"><span class="tocnumber">2.3</span> <span class="toctext">Linker</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table>
+<script>if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script><h2> <span class="mw-headline" id="General"> General </span>
+</h2>
+<p><span>Release consists of the <span title="RTOS: Real Time Operating System;" class="terminologydef" style="cursor:help">RTOS</span> sources and three sample projects - see </span><a href="../articles/Releases.html" title="Releases">Release description</a> for details. Each sample located in separate folder. Structure of sample project folder (folders are in brackets '[ ]'):
+</p>
+<pre><span> [Config]          - linker scripts and other utilities
+ [Exe]             - executable product[s]
+ [List]            - listings and other temporary text files
+ [Obj]             - objects and other intermediate files
+ [settings]        - IAR <span title="IDE: Integrated Development Environment" class="terminologydef" style="cursor:help">IDE</span> auxiliary files
+ [Src]             - test project sources
+ slon.vpj          - SlickEdit project file
+ slon.AVR.vpw      - SlickEdit workspace file
+ SConstruct        - Scons main script file
+ slon.ewd          - IAR IDE auxiliary file
+ slon.ewp          - IAR IDE project
+ slon.eww          - IAR IDE workspace
+</span></pre>
+<p><b>slon</b> is sample project name.
+</p>
+<p>Structure of the RTOS folder:
+</p>
+<pre> scmRTOS
+   Common           - common RTOS sources
+   AVR              - portable part
+</pre>
+<p>See <a href="../articles/Releases.html#Distribution" title="Releases">Distribution section</a> and below about release using manners.
+</p>
+<h2> <span class="mw-headline" id="Building"> Building </span>
+</h2>
+<p>There are several ways to build any sample.
+</p>
+<p>The first is to use <b>IAR IDE</b>. Just launch IDE, open appropriate workspace (*.eww file) and build the project.
+</p>
+<p>Another way is to employ <a href="http://www.scons.org/" class="external text" rel="nofollow">SCons</a> build system. Scons is actually <a href="http://www.python.org/" class="external text" rel="nofollow">Python</a> script, so Python interpreter is necessary to use SCons. Python interpreter can be downloaded from Python's official site. SCons, in a certain sense, is analog of popular build utility make, but much more powerful because of comprehensive underground of programming language (Python).
+</p>
+<p>To use SCons:
+</p>
+<ul>
+<li> download and install Python interpreter v2.4.
+</li>
+<li> download and install SCons tool.
+</li>
+<li> launch SCons by typing tool name in command line in folder where SConstruct file (SCons main script) located <a href="#a1">(1)</a>.
+</li>
+</ul>
+<pre> $PROMPT$&gt;scons
+</pre>
+<p>SCons will build the project.
+</p>
+<p>If user want to use his own build system <a href="#a2">(2)</a> he has to specify the following command-line options for various tools:
+</p>
+<h3> <span class="mw-headline" id="Assembler"> Assembler </span>
+</h3>
+<pre> -S
+ -v3
+ -M()
+ -LList\
+ -OObj\
+ -DENABLE_BIT_DEFINITIONS
+ -D__&lt;MCU&gt;__
+ -ISrc
+ -I../scmRTOS/Common
+ -I../scmRTOS/AVR
+ -I$TOOLKIT_PATH$\AVR\inc
+ -I$TOOLKIT_PATH$\AVR\inc\dlib
+</pre>
+<p>where "&lt;__MCU__&gt;" - device name, for example: __ATmega32__
+</p>
+<p><b>Important!</b> Device name must be specified for uCs which have more then 64 kbytes of flash. Otherwise incorrect work with RAMPZ register occured. Currently these devices are:
+</p>
+<pre>   ATmega103
+   ATmega128
+   ATmega1280
+   ATmega1281
+   ATmega2560
+   ATmega2561
+   AT90CAN128
+   AT90USB1286
+   AT90USB1287
+   AT90USB1287
+</pre>
+<h3> <span class="mw-headline" id="Compiler"> Compiler </span>
+</h3>
+<pre> -e
+ --eec++
+ --cpu=m32
+ -s9
+ -ms
+ -lC List
+ -o Obj
+ --preprocess=c List
+ --silent
+ --debug
+ -DENABLE_BIT_DEFINITIONS
+ -ISrc
+ -I../scmRTOS/Common
+ -I../scmRTOS/AVR
+ -I$TOOLKIT_PATH$\AVR\inc
+ -I$TOOLKIT_PATH$\AVR\inc\dlib
+</pre>
+<h3> <span class="mw-headline" id="Linker"> Linker </span>
+</h3>
+<pre> -s __program_start
+ -r
+ -xsmeo
+ -f Config\lnkm32s.xcl
+ -l List\slon.map
+ -o Exe\slon.d90
+ dlAVR-3s-ec_mul-sf-n.r90
+ -I$TOOLKIT_PATH$\AVR\lib\dlib
+</pre>
+<p>where <code>$TOOLKIT_PATH$</code> - path to folder with toolkit installed.
+</p>
+<hr>
+<p><span id="a1"></span>[1] SConstruct file contains variable TOOLKIT_PATH that specifies path to toolkit on particular PC. The user should correct this path according to his PC toolkit location. The path can be specified directly or through system environment variables as well.
+</p>
+<p><span id="a2"></span>[2] For example, make utility or simple bat file.
+</p>
+</body>
+</html>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 20/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+<div class="printfooter">
+</div>
+	    <div id="catlinks"><div id='catlinks' class='catlinks catlinks-allhidden'></div></div>	    <!-- end content -->
+	    <div class="visualClear"></div>
+	  </div>
+	</div>
+      </div>
+      <div id="column-one">
+	<div class="portlet" id="p-logo">
+	  <a style="background-image: url(../misc/scmrtos.png);"
+	    href="../index.html"
+	    title="ScmRTOS"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+		<div class='portlet' id='p-navigation'>
+	  <h5>Navigation</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Home"><a href="../index.html">Home</a></li>
+	     	      <li id="n-Ports"><a href="../articles/Ports.html">Ports</a></li>
+	     	      <li id="n-Releases"><a href="../articles/Releases.html">Releases</a></li>
+	     	      <li id="n-Documentation"><a href="../articles/Documentation.html">Documentation</a></li>
+	     	      <li id="n-Tools"><a href="../articles/Tools.html">Tools</a></li>
+	     	      <li id="n-currentevents"><a href="../articles/scmRTOS%7ECurrent_events.html">Current events</a></li>
+	     	      <li id="n-Team"><a href="../articles/Team.html">Team</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-support'>
+	  <h5>support</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-help"><a href="../articles/Help%7EContents.html">Help</a></li>
+	     	      <li id="n-Browse-Subversion-repository"><a href="http://scmrtos.svn.sourceforge.net/viewvc/scmrtos/">Browse Subversion repository</a></li>
+	     	      <li id="n-Downloads"><a href="http://sourceforge.net/projects/scmrtos/files/">Downloads</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-development'>
+	  <h5>development</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Bug-tracker"><a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=181958&amp;atid=899286">Bug tracker</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		      </div><!-- end of the left (by default at least) column -->
+      <div class="visualClear"></div>
+      <div id="footer">
+		  	  	  <li id="f-about"><a href="../articles/scmRTOS%7EAbout.html" title="scmRTOS:About">About scmRTOS</a></li>	  	  	</ul>
+      </div>
+    </div>
+  </body>
+</html>

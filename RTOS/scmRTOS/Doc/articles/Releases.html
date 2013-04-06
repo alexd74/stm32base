@@ -1,0 +1,244 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- headlinks removed -->
+	<link rel="shortcut icon" href="../misc/favicon.ico"/>
+    <title>Releases - scmRTOS</title>
+    <style type="text/css">/*<![CDATA[*/ @import "../skins/offline/main.css"; /*]]>*/</style>
+    <link rel="stylesheet" type="text/css" media="print" href="../skins/common/commonPrint.css" />
+          </head>
+  <body
+    class="ns-4 ns-subject page-scmRTOS_About">
+    <div id="globalWrapper">
+      <div id="column-content">
+	<div id="content">
+	  <a name="top" id="contentTop"></a>
+	        <h1 class="firstHeading">Releases</h1>
+	  <div id="bodyContent">
+	    <h3 id="siteSub">From scmRTOS</h3>
+	    <div id="contentSub"></div>
+	    <!-- start content -->
+	    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head><meta http-equiv="content-type" content="charset=utf-8"></head>
+<body>
+<table id="toc" class="toc"><tr><td>
+<div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#General_Description"><span class="tocnumber">1</span> <span class="toctext">General Description</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Project-dependent_Part"><span class="tocnumber">2</span> <span class="toctext">Project-dependent Part</span></a></li>
+<li class="toclevel-1 tocsection-3">
+<a href="#Distribution"><span class="tocnumber">3</span> <span class="toctext">Distribution</span></a>
+<ul>
+<li class="toclevel-2 tocsection-4"><a href="#Working_with_Repository_Samples"><span class="tocnumber">3.1</span> <span class="toctext">Working with Repository Samples</span></a></li>
+<li class="toclevel-2 tocsection-5"><a href="#Typical_Release_Structure_and_Contents"><span class="tocnumber">3.2</span> <span class="toctext">Typical Release Structure and Contents</span></a></li>
+</ul>
+</li>
+<li class="toclevel-1 tocsection-6"><a href="#Releases_list"><span class="tocnumber">4</span> <span class="toctext">Releases list</span></a></li>
+</ul>
+</td></tr></table>
+<script>if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script><h2> <span class="mw-headline" id="General_Description"> General Description </span>
+</h2>
+<p><span>Release, in fact, is a complete working project. Release consists of <span title="RTOS: Real Time Operating System;" class="terminologydef" style="cursor:help">RTOS</span> (Common part and </span><a href="../articles/Ports.html" title="Ports">Port</a>) and bunch of test projects (samples). 
+Each test project in addition to user's code includes a project-dependent part of the RTOS. Project-dependent part is intended to setup RTOS configuration and tune RTOS-exploited peripherals (one of hardware timers and Context Switch interrupt).
+</p>
+<p>Current release version is <b>v4.00</b>. See Releases List (below on this page) for information about current platform releases and <a href="../articles/What%27s_new_in_v4.00.html" title="What's new in v4.00">What's new in v4.00</a> document for differences from previous release.
+</p>
+<h2> <span class="mw-headline" id="Project-dependent_Part"> Project-dependent Part </span>
+</h2>
+<p>Project-dependent part includes three header files that are resided in a user project source folder[s]:
+</p>
+<ul>
+<li> <code>scmRTOS_CONFIG.h</code>;
+</li>
+<li> <code>scmRTOS_TARGET_CFG.h</code>;
+</li>
+<li> <code>scmRTOS_extensions.h</code>.
+</li>
+</ul>
+<p><code>scmRTOS_CONFIG.h</code> describes project-level RTOS configuration macros.
+</p>
+<p><code>scmRTOS_TARGET_CFG.h</code> contains project-level tuning code, in particular System Timer and Context Switch Software interrupt stuff. Generally, Release comes with default definitions of System Timer and Software Context Switch interrupts. The user can change these setting to more project-suitable if need.
+</p>
+<p><code>scmRTOS_extensions.h</code> controls of using of RTOS extensions that can be linked up to the project by including of the corresponding header file.
+</p>
+<h2> <span class="mw-headline" id="Distribution"> Distribution </span>
+</h2>
+<p>A user can get the RTOS using the following ways:
+</p>
+<ul>
+<li> Download the appropriate Release from <a href="https://sourceforge.net/project/showfiles.php?group_id=181958" class="external text" rel="nofollow">SourceForge</a> and setup user's project based on Release structure and sources. This way is most suitable for users who do not use <a href="http://subversion.tigris.org/" class="external text" rel="nofollow">Subversion</a> version control system or who want reside scmRTOS sources locally, without linking to <a href="https://scmrtos.svn.sourceforge.net/svnroot/scmrtos" class="external text" rel="nofollow">main scmRTOS repository</a>;
+</li>
+<li> Export Release from tags branch of <a href="https://scmrtos.svn.sourceforge.net/svnroot/scmrtos" class="external text" rel="nofollow">main RTOS repository</a> - this is the same as above;
+</li>
+<li> Checkout required Sample from <a href="https://scmrtos.svn.sourceforge.net/svnroot/scmrtos" class="external text" rel="nofollow">main RTOS repository</a>. This is most suitable for RTOS port developers. See <a href="#Working_with_Repository_Samples">#Working with Repository Samples</a> for more details about using of this manner;
+</li>
+<li> For users who employ Subversion and who want to synchronize project's RTOS sources with <a href="https://scmrtos.svn.sourceforge.net/svnroot/scmrtos" class="external text" rel="nofollow">main RTOS repository</a> the following way may be suitable: setup user project RTOS subfolders with svn:externals<a href="#a1">(1)</a> properties that will link these subfolders to the appropriate folders in main RTOS repository and perform update. Thus, user gets the ability to synchronize its project scmRTOS sources with main scmRTOS repository.
+</li>
+</ul>
+<h3> <span class="mw-headline" id="Working_with_Repository_Samples"> Working with Repository Samples </span>
+</h3>
+<p>Initially, after checkout from repository the folders
+</p>
+<pre> scmRTOS/Common
+ scmRTOS/&lt;Port&gt;
+ scmRTOS/Extensions
+</pre>
+<p>are empty. User has to switch these folders manually to appropriate repository folders:
+</p>
+<p><code>scmRTOS/Common</code> to <code>$REP$/Common</code>
+</p>
+<p><code>scmRTOS/&lt;Port&gt;</code> to <code>$REP$/Ports/&lt;Port&gt;/&lt;Toolkit&gt;</code>
+</p>
+<p>and 
+</p>
+<p><code>scmRTOS/Extensions</code> to <code>$REP$/Extensions</code>
+</p>
+<p>where:
+</p>
+<ul>
+<li> $REP$ is proper repository url .
+</li>
+<li> &lt;Port&gt; is name of target processor Port.
+</li>
+<li> &lt;Toolkit&gt; is corresponding name and version of toolkit.
+</li>
+</ul>
+<p>After this working copy is ready to build. There are useful switch.bat and switch.sh batch files in root directory.
+</p>
+<h3> <span class="mw-headline" id="Typical_Release_Structure_and_Contents"> Typical Release Structure and Contents </span>
+</h3>
+<p>Typical Release consists of the RTOS sources and a number of samples. For example, such structure may looks like:
+</p>
+<pre> 1-EventFlag.
+ 2-Message.
+ 3-Channel.
+ 4-Debug.
+ scmRTOS.
+</pre>
+<p>where <code>1-EventFlag</code>, <code>2-Message</code>, <code>3-Channel</code>, <code>4-Debug</code> - are four different samples, each is a complete project. The RTOS sources are located in scmRTOS folder.
+</p>
+<p>In this case <code>1-EventFlag</code> sample brings test on speed. <code>OS::TEventFlag</code><span> is the simplest and fastest service of the RTOS. In this example program control flow transferred from timer interrupt service routine (<span title="ISR: Interrupt Service Routine" class="terminologydef" style="cursor:help">ISR</span>) to waiting process. Dedicated processor's pin is set to '1' before signalling of the EventFlag object and set to '0' inside waiting process. So, positive pulse width on this pin corresponds with program control flow transfer time.
+</span></p>
+<p><code>2-Message</code> sample demonstrates ability to send arbitrary information from ISRs and processes to processes. In the example one process waits the message and timer ISR and another process send the message. Message content is different in each case, so, process-receiver can distinguish the source of the message.
+</p>
+<p>Sample <code>3-Channel</code> shows a message queue. Since the message can have arbitrary type, current example uses pointers to class types. In the example two more priority processes "delegate" some actions to the third (low-priority) process. See scmRTOS User's Manual Appendix section for more details about this mechanism.
+</p>
+<p><code>4-Debug</code> presents debug features of the RTOS: stack slacks detecting, process profiling, etc.
+</p>
+<p>Project releases may contain different sets of samples.
+</p>
+<p>Contents of all parts is the same: test project and RTOS sources. Each located in its own folder.
+</p>
+<h2> <span class="mw-headline" id="Releases_list"> Releases list </span>
+</h2>
+<p>For more details about target- and compiler-specific implementations see corresponding page:
+</p>
+<ul>
+<li> <b>MSP430</b>:
+<ul>
+<li> <a href="../articles/MSP430_IAR_Release.html" title="MSP430 IAR Release"> MSP430 IAR (EW430 v5.30) Release</a>
+</li>
+<li> <a href="../articles/MSP430_GCC_Release.html" title="MSP430 GCC Release"><span> MSP430 <span title="GCC: GNU Compiler Collection" class="terminologydef" style="cursor:help">GCC</span> (20110716) Release</span></a>
+</li>
+</ul>
+</li>
+<li> <b>AVR</b>:
+<ul>
+<li> <a href="../articles/AVR_IAR_Release.html" title="AVR IAR Release"> AVR IAR (EWAVR v5.30) Release</a> 
+</li>
+<li> <a href="../articles/AVR_GCC_Release.html" title="AVR GCC Release">AVR GCC Release</a>
+</li>
+</ul>
+</li>
+<li> <b>Blackfin</b>:
+<ul><li> <a href="../articles/Blackfin_CrossCore_VisualDSP%2B%2B_Release.html" title="Blackfin CrossCore VisualDSP++ Release"> Blackfin CrossCore VisualDSP++ (v5.0 Update 9) Release</a> 
+</li></ul>
+</li>
+<li> <b>ARM7</b>:
+<ul>
+<li> <a href="../articles/AT91SAM7_GCC_Release.html" title="AT91SAM7 GCC Release"> AT91SAM7 GCC (4.6.2 Yagarto 20111119) Release</a>
+</li>
+<li> <a href="../articles/LPC2xxx_GCC_Release.html" title="LPC2xxx GCC Release"> LPC2xxx GCC (Sourcery G++ Lite 2010.09-51 (GCC 4.5.1)) Release</a>
+</li>
+<li> <a href="../articles/ADuC70xx_GCC_Release.html" title="ADuC70xx GCC Release"> ADuC70xx GCC (Sourcery G++ Lite 2010.09-51 (GCC 4.5.1)) Release</a>
+</li>
+</ul>
+</li>
+<li> <b>Cortex-M3</b>:
+<ul>
+<li> <a href="../articles/STM32_IAR_Release.html" title="STM32 IAR Release"> STM32 IAR (EWARM v6.30) Release</a>
+</li>
+<li> <a href="../articles/STM32_GCC_Release.html" title="STM32 GCC Release"> STM32 GCC (Sourcery G++ Lite 2010.09-51 (GCC 4.5.1)) Release</a>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><span id="a1"></span>[1] For more details about svn:externals see Subversion documentation.
+</p>
+</body>
+</html>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 23/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+<div class="printfooter">
+</div>
+	    <div id="catlinks"><div id='catlinks' class='catlinks catlinks-allhidden'></div></div>	    <!-- end content -->
+	    <div class="visualClear"></div>
+	  </div>
+	</div>
+      </div>
+      <div id="column-one">
+	<div class="portlet" id="p-logo">
+	  <a style="background-image: url(../misc/scmrtos.png);"
+	    href="../index.html"
+	    title="ScmRTOS"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+		<div class='portlet' id='p-navigation'>
+	  <h5>Navigation</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Home"><a href="../index.html">Home</a></li>
+	     	      <li id="n-Ports"><a href="../articles/Ports.html">Ports</a></li>
+	     	      <li id="n-Releases"><a href="../articles/Releases.html">Releases</a></li>
+	     	      <li id="n-Documentation"><a href="../articles/Documentation.html">Documentation</a></li>
+	     	      <li id="n-Tools"><a href="../articles/Tools.html">Tools</a></li>
+	     	      <li id="n-currentevents"><a href="../articles/scmRTOS%7ECurrent_events.html">Current events</a></li>
+	     	      <li id="n-Team"><a href="../articles/Team.html">Team</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-support'>
+	  <h5>support</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-help"><a href="../articles/Help%7EContents.html">Help</a></li>
+	     	      <li id="n-Browse-Subversion-repository"><a href="http://scmrtos.svn.sourceforge.net/viewvc/scmrtos/">Browse Subversion repository</a></li>
+	     	      <li id="n-Downloads"><a href="http://sourceforge.net/projects/scmrtos/files/">Downloads</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-development'>
+	  <h5>development</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Bug-tracker"><a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=181958&amp;atid=899286">Bug tracker</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		      </div><!-- end of the left (by default at least) column -->
+      <div class="visualClear"></div>
+      <div id="footer">
+		  	  	  <li id="f-about"><a href="../articles/scmRTOS%7EAbout.html" title="scmRTOS:About">About scmRTOS</a></li>	  	  	</ul>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- headlinks removed -->
+	<link rel="shortcut icon" href="../misc/favicon.ico"/>
+    <title>ARM7 Ports - scmRTOS</title>
+    <style type="text/css">/*<![CDATA[*/ @import "../skins/offline/main.css"; /*]]>*/</style>
+    <link rel="stylesheet" type="text/css" media="print" href="../skins/common/commonPrint.css" />
+          </head>
+  <body
+    class="ns-4 ns-subject page-scmRTOS_About">
+    <div id="globalWrapper">
+      <div id="column-content">
+	<div id="content">
+	  <a name="top" id="contentTop"></a>
+	        <h1 class="firstHeading">ARM7 Ports</h1>
+	  <div id="bodyContent">
+	    <h3 id="siteSub">From scmRTOS</h3>
+	    <div id="contentSub"></div>
+	    <!-- start content -->
+	    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head><meta http-equiv="content-type" content="charset=utf-8"></head>
+<body>
+<table id="toc" class="toc"><tr><td>
+<div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1 tocsection-1"><a href="#General"><span class="tocnumber">1</span> <span class="toctext">General</span></a></li>
+<li class="toclevel-1 tocsection-2"><a href="#Program_Control_Flow_Transfer"><span class="tocnumber">2</span> <span class="toctext">Program Control Flow Transfer</span></a></li>
+<li class="toclevel-1 tocsection-3"><a href="#Interrupts"><span class="tocnumber">3</span> <span class="toctext">Interrupts</span></a></li>
+<li class="toclevel-1 tocsection-4"><a href="#System_Timer"><span class="tocnumber">4</span> <span class="toctext">System Timer</span></a></li>
+<li class="toclevel-1 tocsection-5"><a href="#Summary"><span class="tocnumber">5</span> <span class="toctext">Summary</span></a></li>
+</ul>
+</td></tr></table>
+<script>if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script><h2> <span class="mw-headline" id="General"> General </span>
+</h2>
+<p>ARM7 is 32-bit RISC von Neumann processor. As user processes runs in System mode, 16 registers accessible by process:
+</p>
+<ul>
+<li> 1 register is Status Register (CPSR);
+</li>
+<li> 1 register is R15, Program Counter (PC);
+</li>
+<li> 1 register is R14, Link Register (LR);
+</li>
+<li> 1 register is R13, Stack Pointer (SP);
+</li>
+<li> 13 general purpose registers R0-R12 (GPR).
+</li>
+</ul>
+<p>Therefore, context in the processor consists of:
+</p>
+<pre>   13 (GPR) + 1 (PC) + 1 (LR) + 1 (CPSR) = 16 registers or 16*4 = 64 bytes.
+</pre>
+<p>This means that each user's process must have stack greater at least context size (64 bytes) + call depth multiplied by 4. SP register contents stored in kernel's process table.
+</p>
+<p>The Port uses one common stack for data and return addresses.
+</p>
+<h2> <span class="mw-headline" id="Program_Control_Flow_Transfer"> Program Control Flow Transfer </span>
+</h2>
+<p>Both methods - direct and software interrupt - are supported in the ARM7 port, except ADuC port, where only direct method is supported because of absence of interrupt controller.
+</p>
+<p>In case of direct program control flow transfer there are no any peculiarities.
+</p>
+<p><span>In case of software interrupt program control flow transfer a situation is the following: if interrupt controller has dedicated software interrupt, this interrupt is used (as in LPC2xxx port). If there is no special software interrupt, one of unused hardware interrupts has been used. Any scmRTOS release has default Software Context Switch interrupt assignment. The user can leave this default assignment or change the assignment by analogy with defaults according to his project requirements. This assignment is defined in project-dependent part of the <span title="RTOS: Real Time Operating System;" class="terminologydef" style="cursor:help">RTOS</span> - </span><code>scmRTOS_TARGET_CFG.h</code> header file.
+</p>
+<h2> <span class="mw-headline" id="Interrupts"> Interrupts </span>
+</h2>
+<p>The using of interrupts with scmRTOS does not make any special demands. The user should keep in mind those things:
+</p>
+<ul>
+<li> only IRQ exception can use OS services, not FIQ;
+</li>
+<li> IRQ exception handler implemented in <code>scmRTOS_Target.s79</code>;
+</li>
+<li>
+<span> interrupt service routine (<span title="ISR: Interrupt Service Routine" class="terminologydef" style="cursor:help">ISR</span>) functions must be qualified with </span><code>OS_INTERRUPT</code> macro;
+</li>
+<li> <code>TISRW</code> object must be declared at the beginning of ISR which uses OS services. This object involves constructor and destructor that play very important role in the RTOS rescheduling mechanism and integrity.
+</li>
+<li> in case of direct program control flow transfer ISR function which is not uses OS services must be implemented in same way as ISR function which is uses OS services.
+</li>
+<li> in case of software interrupt program control flow transfer, ISR function which is not uses OS services can be implemented in same way as ISR function which is uses OS services, but it leads to some overhead in <code>TISRW</code> object constructor and destructor. If overhead is undesirable, ISR function must still be qualified with OS_INTERRUPT macro, but instead of declaring <code>TISRW</code> object at the begining of ISR it must contain <code>IRQ_DONE()</code> macro at the end of function.
+</li>
+</ul>
+<p><code>main()</code> function stack (CSTACK) occupies the same space as IRQ stack (because interrupts are disabled before RTOS starts). Therefore, this stack depth is defined to be zero-sized in linker script. IRQ stack depth defined in linker script by directive:
+</p>
+<pre> -DIRQ_STACK_SIZE=N
+</pre>
+<p>where N - size of the stack.
+</p>
+<h2> <span class="mw-headline" id="System_Timer"> System Timer </span>
+</h2>
+<p>scmRTOS v4 allows user to choose any available hardware timer, fully setup the timer and setup interrupt vector of the timer. As Software Context Switch interrupt assignment, any scmRTOS release has default timer assignment. The user can leave this default assignment or change the assignment by analogy with defaults according to his project requirements. All project-dependent definitions of System Timer hardware implementation (setting, interrupt vector, etc.) resided in project-dependent part of the RTOS - <code>scmRTOS_TARGET_CFG.h</code> header file.
+</p>
+<h2> <span class="mw-headline" id="Summary"> Summary </span>
+</h2>
+<p>See Release info for more details about port features and using examples:
+</p>
+<ul>
+<li> <a href="../articles/AT91SAM7_GCC_Release.html" title="AT91SAM7 GCC Release"><span>AT91SAM7 <span title="GCC: GNU Compiler Collection" class="terminologydef" style="cursor:help">GCC</span> Release</span></a>
+</li>
+<li> <a href="../articles/LPC2xxx_GCC_Release.html" title="LPC2xxx GCC Release">LPC2xxx GCC Release</a>
+</li>
+<li> <a href="../articles/ADuC70xx_GCC_Release.html" title="ADuC70xx GCC Release">ADuC70xx GCC Release</a>
+</li>
+</ul>
+<p>And, as usual, see <a href="../articles/Documentation.html" title="Documentation" class="mw-redirect">Documentation</a> for more details about RTOS contents, structure, functionality and features.
+</p>
+</body>
+</html>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 18/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+<div class="printfooter">
+</div>
+	    <div id="catlinks"><div id='catlinks' class='catlinks catlinks-allhidden'></div></div>	    <!-- end content -->
+	    <div class="visualClear"></div>
+	  </div>
+	</div>
+      </div>
+      <div id="column-one">
+	<div class="portlet" id="p-logo">
+	  <a style="background-image: url(../misc/scmrtos.png);"
+	    href="../index.html"
+	    title="ScmRTOS"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+		<div class='portlet' id='p-navigation'>
+	  <h5>Navigation</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Home"><a href="../index.html">Home</a></li>
+	     	      <li id="n-Ports"><a href="../articles/Ports.html">Ports</a></li>
+	     	      <li id="n-Releases"><a href="../articles/Releases.html">Releases</a></li>
+	     	      <li id="n-Documentation"><a href="../articles/Documentation.html">Documentation</a></li>
+	     	      <li id="n-Tools"><a href="../articles/Tools.html">Tools</a></li>
+	     	      <li id="n-currentevents"><a href="../articles/scmRTOS%7ECurrent_events.html">Current events</a></li>
+	     	      <li id="n-Team"><a href="../articles/Team.html">Team</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-support'>
+	  <h5>support</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-help"><a href="../articles/Help%7EContents.html">Help</a></li>
+	     	      <li id="n-Browse-Subversion-repository"><a href="http://scmrtos.svn.sourceforge.net/viewvc/scmrtos/">Browse Subversion repository</a></li>
+	     	      <li id="n-Downloads"><a href="http://sourceforge.net/projects/scmrtos/files/">Downloads</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-development'>
+	  <h5>development</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Bug-tracker"><a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=181958&amp;atid=899286">Bug tracker</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		      </div><!-- end of the left (by default at least) column -->
+      <div class="visualClear"></div>
+      <div id="footer">
+		  	  	  <li id="f-about"><a href="../articles/scmRTOS%7EAbout.html" title="scmRTOS:About">About scmRTOS</a></li>	  	  	</ul>
+      </div>
+    </div>
+  </body>
+</html>

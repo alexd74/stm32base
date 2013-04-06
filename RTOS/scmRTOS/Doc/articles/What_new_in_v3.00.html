@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<!-- headlinks removed -->
+	<link rel="shortcut icon" href="../misc/favicon.ico"/>
+    <title>What new in v3.00 - scmRTOS</title>
+    <style type="text/css">/*<![CDATA[*/ @import "../skins/offline/main.css"; /*]]>*/</style>
+    <link rel="stylesheet" type="text/css" media="print" href="../skins/common/commonPrint.css" />
+          </head>
+  <body
+    class="ns-4 ns-subject page-scmRTOS_About">
+    <div id="globalWrapper">
+      <div id="column-content">
+	<div id="content">
+	  <a name="top" id="contentTop"></a>
+	        <h1 class="firstHeading">What new in v3.00</h1>
+	  <div id="bodyContent">
+	    <h3 id="siteSub">From scmRTOS</h3>
+	    <div id="contentSub"></div>
+	    <!-- start content -->
+	    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<head><meta http-equiv="content-type" content="charset=utf-8"></head>
+<body><ul>
+<li> The source code significantly rearranged. As result:
+<ul>
+<li> Definitions of kernel and services are placed on separate files.
+</li>
+<li><span> User support library has been removed from Port part and now the library is resided in Common part of the <span title="RTOS: Real Time Operating System;" class="terminologydef" style="cursor:help">RTOS</span>.
+</span></li>
+<li> Portable part is much more "decoupled" from Common part that gives more freedom for Port functionality realization.
+</li>
+</ul>
+</li>
+<li> The RTOS is positioned as explicitly separated on three parts:
+<ul>
+<li> Common part.
+</li>
+<li> Target-dependent part (port).
+</li>
+<li> Project-dependent part that allows user to tune the RTOS according to his project requirements. Project-dependent part includes two header files:
+<ul>
+<li> <code>scmRTOS_CONFIG.h</code>;
+</li>
+<li> <code>scmRTOS_TARGET_CFG.h</code>.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li> Any available hardware timer in processor can be used as System Timer.
+</li>
+<li> System Timer and Context Switch Software interrupts are fully definable at user's project level.
+</li>
+<li> Context Switch mechanisms are significantly redesigned:
+<ul>
+<li><span> when Direct Program Control Flow transfer scheme is used no special requirements to place context saving code immediately at begining of interrupt service routine (<span title="ISR: Interrupt Service Routine" class="terminologydef" style="cursor:help">ISR</span>). This eliminates the most frequent cause of program (that using the RTOS) failure, which has taken place in versions (v1.xx and v2.xx) of the RTOS.
+</span></li>
+<li> when Software Interrupt Program Control Flow transfer scheme is used the only one rescheduling is performed inside interrupt service routine - on ISR exit, no in every service function that is called. This improves performance.
+</li>
+</ul>
+</li>
+<li> Priority names order do not depend on Context Switch Scheme (in contrast to v2.xx). <code>pr0</code> - is always the highest priority, <code>prN</code> - is always the lowest priority, where N - is integer number in range [1..32] and defined as <code>scmRTOS_PROCESS_COUNT + 1</code>. As usual, <code>prN</code> is priority of the System's IdleProcess.
+</li>
+<li> Software switch on ISR stack support. Currently, this feature is suitable for MSP430 and AVR only. The feature is optional. See MSP430 Port or AVR Port pages or [and] Ports descriptions for more details.
+</li>
+<li> Type of the System timeouts is defined at project level now. See project RTOS configuration file <code>scmRTOS_CONFIG.h</code>. The type of the System timeouts can be <code>byte</code>, <code>word</code> or <code>dword</code>. The user can choose the most suitable variant for his current project.
+</li>
+<li> IdleProcess stack[s] size specified at user's project level now (see below).
+</li>
+<li> Some configuration options have been added:
+<ul>
+<li> <code>scmRTOS_ISRW_TYPE</code>. The macro defines type of ISR Wrapper object in System Timer interrupt. The macro can have values <code>TISRW</code> or <code>TISRW_SS</code>. Now this is applicable for MSP430 and AVR ports only.
+</li>
+<li> <code>scmRTOS_IDLE_PROCESS_STACK_SIZE</code>. Specifies IdleProcess stack size. AVR Port has two same macros to define stacks sizes (because of two stacks used with EWAVR):
+<ul>
+<li> <code>scmRTOS_IDLE_PROCESS_DATA_STACK_SIZE</code> - stack size for process's data.
+</li>
+<li> <code>scmRTOS_IDLE_PROCESS_RETURN_STACK_SIZE</code> - stack size for return addresses storage.
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li> Several <a href="../articles/ARM7_Ports.html" title="ARM7 Ports">ARM7 Ports</a> added:
+<ul>
+<li> LPC2xxx (NXP).
+</li>
+<li> AT91SAM7 (Atmel).
+</li>
+<li> ADuC7xxx (ADI).
+</li>
+</ul>
+</li>
+</ul></body>
+</html>
+
+<!-- 
+NewPP limit report
+Preprocessor node count: 1/1000000
+Post-expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Expensive parser function count: 0/100
+-->
+<div class="printfooter">
+</div>
+	    <div id="catlinks"><div id='catlinks' class='catlinks catlinks-allhidden'></div></div>	    <!-- end content -->
+	    <div class="visualClear"></div>
+	  </div>
+	</div>
+      </div>
+      <div id="column-one">
+	<div class="portlet" id="p-logo">
+	  <a style="background-image: url(../misc/scmrtos.png);"
+	    href="../index.html"
+	    title="ScmRTOS"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+		<div class='portlet' id='p-navigation'>
+	  <h5>Navigation</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Home"><a href="../index.html">Home</a></li>
+	     	      <li id="n-Ports"><a href="../articles/Ports.html">Ports</a></li>
+	     	      <li id="n-Releases"><a href="../articles/Releases.html">Releases</a></li>
+	     	      <li id="n-Documentation"><a href="../articles/Documentation.html">Documentation</a></li>
+	     	      <li id="n-Tools"><a href="../articles/Tools.html">Tools</a></li>
+	     	      <li id="n-currentevents"><a href="../articles/scmRTOS%7ECurrent_events.html">Current events</a></li>
+	     	      <li id="n-Team"><a href="../articles/Team.html">Team</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-support'>
+	  <h5>support</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-help"><a href="../articles/Help%7EContents.html">Help</a></li>
+	     	      <li id="n-Browse-Subversion-repository"><a href="http://scmrtos.svn.sourceforge.net/viewvc/scmrtos/">Browse Subversion repository</a></li>
+	     	      <li id="n-Downloads"><a href="http://sourceforge.net/projects/scmrtos/files/">Downloads</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		<div class='portlet' id='p-development'>
+	  <h5>development</h5>
+	  <div class='pBody'>
+	    <ul>
+	    	      <li id="n-Bug-tracker"><a href="http://sourceforge.net/tracker/?func=browse&amp;group_id=181958&amp;atid=899286">Bug tracker</a></li>
+	     	    </ul>
+	  </div>
+	</div>
+		      </div><!-- end of the left (by default at least) column -->
+      <div class="visualClear"></div>
+      <div id="footer">
+		  	  	  <li id="f-about"><a href="../articles/scmRTOS%7EAbout.html" title="scmRTOS:About">About scmRTOS</a></li>	  	  	</ul>
+      </div>
+    </div>
+  </body>
+</html>
