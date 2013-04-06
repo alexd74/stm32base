@@ -439,7 +439,6 @@ uint32_t __STREXW(uint32_t value, uint32_t *addr)
  *
  * Return the actual process stack pointer
  */
-uint32_t __get_PSP(void) __attribute__( ( naked ) );
 uint32_t __get_PSP(void)
 {
   uint32_t result=0;
@@ -458,7 +457,6 @@ uint32_t __get_PSP(void)
  * Assign the value ProcessStackPointer to the MSP
  * (process stack pointer) Cortex processor register
  */
-void __set_PSP(uint32_t topOfProcStack) __attribute__( ( naked ) );
 void __set_PSP(uint32_t topOfProcStack)
 {
   __ASM volatile ("MSR psp, %0\n\t"
@@ -473,7 +471,6 @@ void __set_PSP(uint32_t topOfProcStack)
  * Return the current value of the MSP (main stack pointer)
  * Cortex processor register
  */
-uint32_t __get_MSP(void) __attribute__( ( naked ) );
 uint32_t __get_MSP(void)
 {
   uint32_t result=0;
@@ -492,7 +489,6 @@ uint32_t __get_MSP(void)
  * Assign the value mainStackPointer to the MSP
  * (main stack pointer) Cortex processor register
  */
-void __set_MSP(uint32_t topOfMainStack) __attribute__( ( naked ) );
 void __set_MSP(uint32_t topOfMainStack)
 {
   __ASM volatile ("MSR msp, %0\n\t"
@@ -733,7 +729,7 @@ uint32_t __STREXB(uint8_t value, uint8_t *addr)
 {
    uint32_t result=0;
 
-   __ASM volatile ("strexb %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
+   __ASM volatile ("strexb %0, %2, [%1]" : "=&r" (result) : "r" (addr), "r" (value) );
    return(result);
 }
 
@@ -750,7 +746,7 @@ uint32_t __STREXH(uint16_t value, uint16_t *addr)
 {
    uint32_t result=0;
 
-   __ASM volatile ("strexh %0, %2, [%1]" : "=r" (result) : "r" (addr), "r" (value) );
+   __ASM volatile ("strexh %0, %2, [%1]" : "=&r" (result) : "r" (addr), "r" (value) );
    return(result);
 }
 

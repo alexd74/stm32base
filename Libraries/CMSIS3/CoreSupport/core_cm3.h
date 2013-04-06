@@ -805,7 +805,7 @@ extern uint32_t __get_PSP(void);
  * Assign the value ProcessStackPointer to the MSP
  * (process stack pointer) Cortex processor register
  */
-extern void __set_PSP(uint32_t topOfProcStack);
+extern void __set_PSP(uint32_t topOfProcStack) __attribute__( ( naked ) );
 
 /**
  * @brief  Return the Main Stack Pointer
@@ -1081,7 +1081,7 @@ static __INLINE  void __CLREX()                   { __ASM ("clrex"); }
  *
  * Return the actual process stack pointer
  */
-extern uint32_t __get_PSP(void);
+extern uint32_t __get_PSP(void) __attribute__( ( naked ) );
 
 /**
  * @brief  Set the Process Stack Pointer
@@ -1101,7 +1101,7 @@ extern void __set_PSP(uint32_t topOfProcStack);
  * Return the current value of the MSP (main stack pointer)
  * Cortex processor register
  */
-extern uint32_t __get_MSP(void);
+extern uint32_t __get_MSP(void) __attribute__( ( naked ) );
 
 /**
  * @brief  Set the Main Stack Pointer
@@ -1111,7 +1111,7 @@ extern uint32_t __get_MSP(void);
  * Assign the value mainStackPointer to the MSP
  * (main stack pointer) Cortex processor register
  */
-extern void __set_MSP(uint32_t topOfMainStack);
+extern void __set_MSP(uint32_t topOfMainStack) __attribute__( ( naked ) );
 
 /**
  * @brief  Reverse byte order in unsigned short value
