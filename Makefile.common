@@ -1,3 +1,21 @@
+#  Copyright (c) 2012 Alexey Dyachenko <alexd@inbox.ru>
+#  
+#  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+#  and associated documentation files (the "Software"), to deal in the Software without restriction,
+#  including without limitation the rights to use, copy, modify, merge, publish, distribute,
+#  sublicense, and/or sell copies of the Software, and to permit persons to whom the Software
+#  is furnished to do so, subject to the following conditions:
+#  
+#  The above copyright notice and this permission notice shall be included in all copies
+#  or substantial portions of the Software.
+#  
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+#  INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+#  AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+#  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 
 ifndef TOOL
 #TOOL	= arm-none-eabi-
@@ -145,18 +163,18 @@ FLAGS	+= $(PROJECT_FLAGS)
 
 ifeq ($(MCU),cortex-m3)
 	# includes
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/CM3/CoreSupport
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS3/CoreSupport
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS3/DeviceSupport/ST/STM32F10x
 
 	# source directories (all *.c, *.cpp and *.S files included)
-	DIRS += $(TOPDIR)/Libraries/CMSIS/CM3/CoreSupport
-	DIRS += $(TOPDIR)/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x
+	DIRS += $(TOPDIR)/Libraries/CMSIS3/CoreSupport
+	DIRS += $(TOPDIR)/Libraries/CMSIS3/DeviceSupport/ST/STM32F10x
 else
 	# includes
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Include
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/ST/STM32F4xx/Include
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/Include
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/ST/STM32F4xx/Include
 
-	DIRS += $(TOPDIR)/Libraries/CMSIS/ST/STM32F4xx/Source
+	DIRS += $(TOPDIR)/Libraries/CMSIS4/ST/STM32F4xx/Source
 
 	ifdef HARD_FLOAT
 		FLAGS += -fsingle-precision-constant -Wdouble-promotion
