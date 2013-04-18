@@ -36,13 +36,8 @@ void (* const g_pfnVectors[])(void) = //{{{
   SVC_Handler,
   DebugMon_Handler,
   0,
-#ifdef SCMRTOS
-  PendSVC_ISR,
-  SystemTimer_ISR,
-#else
   PendSV_Handler,
   SysTick_Handler,
-#endif
 
   /* External Interrupts */
   WWDG_IRQHandler,

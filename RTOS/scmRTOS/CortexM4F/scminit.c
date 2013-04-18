@@ -1,11 +1,16 @@
 #ifndef SCM_CUSTOM_INIT
 
+#ifdef STM32F4
 #include "stm32f4xx.h"
+#else
+#include "stm32f10x.h"
+#endif
 
 void initScmRTOS(void)  __attribute__ ((constructor, used));
 
 void initScmRTOS(void)
 {
+#ifdef STM32F4
 
 	// enable GPIOx peripherals
 	RCC->AHB1ENR |=
@@ -20,6 +25,19 @@ void initScmRTOS(void)
 			| RCC_AHB1ENR_GPIOHEN
 			| RCC_AHB1ENR_GPIOIEN
 			;
+#else
+  // enable IOPx periph
+  RCC->APB2ENR |=
+    RCC_APB2ENR_IOPAEN |
+    RCC_APB2ENR_IOPBEN |
+    RCC_APB2ENR_IOPCEN |
+    RCC_APB2ENR_IOPDEN |
+#ifdef RCC_APB2ENR_IOPEEN
+    RCC_APB2ENR_IOPEEN |
+#endif
+    RCC_APB2ENR_AFIOEN;
+
+#endif
 
   // Настраиваем приоритеты прерываний.
   // 15- самый низкий приоритет.

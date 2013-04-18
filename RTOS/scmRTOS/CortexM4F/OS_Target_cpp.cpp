@@ -212,7 +212,7 @@ enum
  * This is the default (weak) system timer ISR handler.
  * The user can redefine this handler if needed.
  */
-#pragma weak SystemTimer_ISR = Default_SystemTimer_ISR
+//#pragma weak SystemTimer_ISR = Default_SystemTimer_ISR
 namespace OS
 {
 extern "C" OS_INTERRUPT void Default_SystemTimer_ISR()

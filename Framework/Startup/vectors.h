@@ -39,13 +39,8 @@ void WEAK UsageFault_Handler(void);
 void WEAK SVC_Handler(void);
 void WEAK DebugMon_Handler(void);
 
-#ifdef SCMRTOS
-void WEAK PendSVC_ISR(void);
-void WEAK SystemTimer_ISR(void);
-#else
 void WEAK PendSV_Handler(void);
 void WEAK SysTick_Handler(void);
-#endif
 
 #if defined STM32F10X_LD
 #include "vectors_LD.h"

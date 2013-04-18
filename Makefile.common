@@ -246,16 +246,11 @@ ifdef RTOS
 		INCLUDES += -I$(SCMDIR)/Common
 		INCLUDES += -I$(SCMDIR)/Extensions/Profiler
 
-		ifeq ($(MCU),cortex-m3)
-			DIRS	+= $(SCMDIR)/CortexM3
-			INCLUDES += -I$(SCMDIR)/CortexM3
-		else
-			DIRS	+= $(SCMDIR)/CortexM4F
-			INCLUDES += -I$(SCMDIR)/CortexM4F
-		endif
+		DIRS	+= $(SCMDIR)/CortexM4F
+		INCLUDES += -I$(SCMDIR)/CortexM4F
 
-#		BASEFLAGS += -DPendSVC_ISR=PendSV_Handler -DSystemTimer_ISR=SysTick_Handler
-		BASEFLAGS += -DSCMRTOS
+		BASEFLAGS += -DPendSVC_ISR=PendSV_Handler
+		BASEFLAGS += -DDefault_SystemTimer_ISR=SysTick_Handler
 	endif
 
 	ifeq ($(RTOS),FreeRTOS)
@@ -278,8 +273,6 @@ ifdef RTOS
 				DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM3
 			endif
 		endif
-
-		BASEFLAGS += -DFREERTOS
 	endif
 endif
 
