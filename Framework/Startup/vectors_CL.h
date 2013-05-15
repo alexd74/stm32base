@@ -19,8 +19,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 */
 
-#ifndef VECTORS_LD_VL_H
-#define VECTORS_LD_VL_H
+#ifndef VECTORS_CL_H
+#define VECTORS_CL_H
 
 void WEAK WWDG_IRQHandler(void);
 void WEAK PVD_IRQHandler(void);
@@ -40,26 +40,51 @@ void WEAK DMA1_Channel4_IRQHandler(void);
 void WEAK DMA1_Channel5_IRQHandler(void);
 void WEAK DMA1_Channel6_IRQHandler(void);
 void WEAK DMA1_Channel7_IRQHandler(void);
-void WEAK ADC1_IRQHandler(void);
+void WEAK ADC1_2_IRQHandler(void);
+void WEAK CAN1_TX_IRQHandler(void);
+void WEAK CAN1_RX0_IRQHandler(void);
+void WEAK CAN1_RX1_IRQHandler(void);
+void WEAK CAN1_SCE_IRQHandler(void);
 void WEAK EXTI9_5_IRQHandler(void);
-void WEAK TIM1_BRK_TIM15_IRQHandler(void);
-void WEAK TIM1_UP_TIM16_IRQHandler(void);
-void WEAK TIM1_TRG_COM_TIM17_IRQHandler(void);
+void WEAK TIM1_BRK_IRQHandler(void);
+void WEAK TIM1_UP_IRQHandler(void);
+void WEAK TIM1_TRG_COM_IRQHandler(void);
 void WEAK TIM1_CC_IRQHandler(void);
 void WEAK TIM2_IRQHandler(void);
 void WEAK TIM3_IRQHandler(void);
+void WEAK TIM4_IRQHandler(void);
 void WEAK I2C1_EV_IRQHandler(void);
 void WEAK I2C1_ER_IRQHandler(void);
+void WEAK I2C2_EV_IRQHandler(void);
+void WEAK I2C2_ER_IRQHandler(void);
 void WEAK SPI1_IRQHandler(void);
+void WEAK SPI2_IRQHandler(void);
 void WEAK USART1_IRQHandler(void);
 void WEAK USART2_IRQHandler(void);
+void WEAK USART3_IRQHandler(void);
 void WEAK EXTI15_10_IRQHandler(void);
 void WEAK RTCAlarm_IRQHandler(void);
-void WEAK CEC_IRQHandler(void);
-void WEAK TIM6_DAC_IRQHandler(void);
+void WEAK OTG_FS_WKUP_IRQHandler(void);
+void WEAK TIM5_IRQHandler(void);
+void WEAK SPI3_IRQHandler(void);
+void WEAK UART4_IRQHandler(void);
+void WEAK UART5_IRQHandler(void);
+void WEAK TIM6_IRQHandler(void);
 void WEAK TIM7_IRQHandler(void);
+void WEAK DMA2_Channel1_IRQHandler(void);
+void WEAK DMA2_Channel2_IRQHandler(void);
+void WEAK DMA2_Channel3_IRQHandler(void);
+void WEAK DMA2_Channel4_IRQHandler(void);
+void WEAK DMA2_Channel5_IRQHandler(void);
+void WEAK ETH_IRQHandler(void);
+void WEAK ETH_WKUP_IRQHandler(void);
+void WEAK CAN2_TX_IRQHandler(void);
+void WEAK CAN2_RX0_IRQHandler(void);
+void WEAK CAN2_RX1_IRQHandler(void);
+void WEAK CAN2_SCE_IRQHandler(void);
+void WEAK OTG_FS_IRQHandler(void);
 
-#endif /* ifndef VECTORS_LD_VL_H */
+#endif /* ifndef VECTORS_CL_H */
 
 /* {{{ Modeline for ViM
  * vim600:fdm=marker fdl=0 fdc=3:

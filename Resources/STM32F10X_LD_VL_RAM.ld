@@ -11,6 +11,7 @@ MEMORY
 	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH =  8K
 	FLASH (rx)	: ORIGIN = 0x08000000, LENGTH = 128K
 }
+
 /* higher address of the user mode stack */
 PROVIDE ( _estack = ALIGN(ORIGIN(RAM) + LENGTH(RAM) - 8 ,8) );
 
@@ -156,4 +157,3 @@ DISCARD :
     .debug_typenames 0 : { *(.debug_typenames) }
     .debug_varnames  0 : { *(.debug_varnames) }
 }
-

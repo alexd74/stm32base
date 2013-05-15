@@ -58,46 +58,56 @@ void (* const g_pfnVectors[])(void) = //{{{
   DMA1_Channel5_IRQHandler,
   DMA1_Channel6_IRQHandler,
   DMA1_Channel7_IRQHandler,
-  ADC1_IRQHandler,
-  0,
-  0,
-  0,
-  0,
+  ADC1_2_IRQHandler,
+  CAN1_TX_IRQHandler,
+  CAN1_RX0_IRQHandler,
+  CAN1_RX1_IRQHandler,
+  CAN1_SCE_IRQHandler,
   EXTI9_5_IRQHandler,
-
-  TIM1_BRK_TIM15_IRQHandler,
-  TIM1_UP_TIM16_IRQHandler,
-  TIM1_TRG_COM_TIM17_IRQHandler,
+  TIM1_BRK_IRQHandler,
+  TIM1_UP_IRQHandler,
+  TIM1_TRG_COM_IRQHandler,
   TIM1_CC_IRQHandler,
   TIM2_IRQHandler,
   TIM3_IRQHandler,
-  0,
+  TIM4_IRQHandler,
   I2C1_EV_IRQHandler,
   I2C1_ER_IRQHandler,
-  0,
-  0,
+  I2C2_EV_IRQHandler,
+  I2C2_ER_IRQHandler,
   SPI1_IRQHandler,
-  0,
+  SPI2_IRQHandler,
   USART1_IRQHandler,
   USART2_IRQHandler,
-  0,
+  USART3_IRQHandler,
   EXTI15_10_IRQHandler,
   RTCAlarm_IRQHandler,
-  CEC_IRQHandler,
-  0,0,0,0,0,0,0,
+  OTG_FS_WKUP_IRQHandler,
   0,
   0,
   0,
   0,
-  TIM6_DAC_IRQHandler,
+  0,
+  0,
+  0,
+  TIM5_IRQHandler,
+  SPI3_IRQHandler,
+  UART4_IRQHandler,
+  UART5_IRQHandler,
+  TIM6_IRQHandler,
   TIM7_IRQHandler,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
-  0,
+  DMA2_Channel1_IRQHandler,
+  DMA2_Channel2_IRQHandler,
+  DMA2_Channel3_IRQHandler,
+  DMA2_Channel4_IRQHandler,
+  DMA2_Channel5_IRQHandler,
+  ETH_IRQHandler,
+  ETH_WKUP_IRQHandler,
+  CAN2_TX_IRQHandler,
+  CAN2_RX0_IRQHandler,
+  CAN2_RX1_IRQHandler,
+  CAN2_SCE_IRQHandler,
+  OTG_FS_IRQHandler,
   0,
   0,
   0,
@@ -166,24 +176,49 @@ void (* const g_pfnVectors[])(void) = //{{{
 #pragma weak DMA1_Channel5_IRQHandler = Default_Handler
 #pragma weak DMA1_Channel6_IRQHandler = Default_Handler
 #pragma weak DMA1_Channel7_IRQHandler = Default_Handler
-#pragma weak ADC1_IRQHandler = Default_Handler
+#pragma weak ADC1_2_IRQHandler = Default_Handler
+#pragma weak CAN1_TX_IRQHandler = Default_Handler
+#pragma weak CAN1_RX0_IRQHandler = Default_Handler
+#pragma weak CAN1_RX1_IRQHandler = Default_Handler
+#pragma weak CAN1_SCE_IRQHandler = Default_Handler
 #pragma weak EXTI9_5_IRQHandler = Default_Handler
-#pragma weak TIM1_BRK_TIM15_IRQHandler = Default_Handler
-#pragma weak TIM1_UP_TIM16_IRQHandler = Default_Handler
-#pragma weak TIM1_TRG_COM_TIM17_IRQHandler = Default_Handler
+#pragma weak TIM1_BRK_IRQHandler = Default_Handler
+#pragma weak TIM1_UP_IRQHandler = Default_Handler
+#pragma weak TIM1_TRG_COM_IRQHandler = Default_Handler
 #pragma weak TIM1_CC_IRQHandler = Default_Handler
 #pragma weak TIM2_IRQHandler = Default_Handler
 #pragma weak TIM3_IRQHandler = Default_Handler
+#pragma weak TIM4_IRQHandler = Default_Handler
 #pragma weak I2C1_EV_IRQHandler = Default_Handler
 #pragma weak I2C1_ER_IRQHandler = Default_Handler
+#pragma weak I2C2_EV_IRQHandler = Default_Handler
+#pragma weak I2C2_ER_IRQHandler = Default_Handler
 #pragma weak SPI1_IRQHandler = Default_Handler
+#pragma weak SPI2_IRQHandler = Default_Handler
 #pragma weak USART1_IRQHandler = Default_Handler
 #pragma weak USART2_IRQHandler = Default_Handler
+#pragma weak USART3_IRQHandler = Default_Handler
 #pragma weak EXTI15_10_IRQHandler = Default_Handler
 #pragma weak RTCAlarm_IRQHandler = Default_Handler
-#pragma weak CEC_IRQHandler = Default_Handler
-#pragma weak TIM6_DAC_IRQHandler = Default_Handler
+#pragma weak OTG_FS_WKUP_IRQHandler = Default_Handler
+#pragma weak TIM5_IRQHandler = Default_Handler
+#pragma weak SPI3_IRQHandler = Default_Handler
+#pragma weak UART4_IRQHandler = Default_Handler
+#pragma weak UART5_IRQHandler = Default_Handler
+#pragma weak TIM6_IRQHandler = Default_Handler
 #pragma weak TIM7_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel1_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel2_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel3_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel4_IRQHandler = Default_Handler
+#pragma weak DMA2_Channel5_IRQHandler = Default_Handler
+#pragma weak ETH_IRQHandler = Default_Handler
+#pragma weak ETH_WKUP_IRQHandler = Default_Handler
+#pragma weak CAN2_TX_IRQHandler = Default_Handler
+#pragma weak CAN2_RX0_IRQHandler = Default_Handler
+#pragma weak CAN2_RX1_IRQHandler = Default_Handler
+#pragma weak CAN2_SCE_IRQHandler = Default_Handler
+#pragma weak OTG_FS_IRQHandler = Default_Handler
 
 //}}}
 

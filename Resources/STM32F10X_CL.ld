@@ -1,5 +1,5 @@
 /*************************************************
-* linker script for ST32F100  microcontroller
+* linker script for STM32F10x Connectivity Line Devices
 ************************************************/ 
 
 ENTRY(Reset_Handler)
@@ -8,8 +8,8 @@ _Minimum_Stack_Size = 0x100 ;
 
 MEMORY
 {
-	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH =  8K
-	FLASH (rx)	: ORIGIN = 0x08000000, LENGTH = 128K
+	RAM (xrw)	: ORIGIN = 0x20000000, LENGTH =  64K
+	FLASH (rx)	: ORIGIN = 0x08000000, LENGTH = 256K
 }
 
 /* higher address of the user mode stack */
