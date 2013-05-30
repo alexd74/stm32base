@@ -1,7 +1,7 @@
 #
 # Copyright (c) 2011 Alexey Dyachenko <alexd@inbox.ru>
 #
-# Makefile template for STM32 DiscoveryVL project
+# Makefile template for STM32 base project
 #
 
 TOPDIR = ../../..

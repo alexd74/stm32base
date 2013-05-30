@@ -44,7 +44,7 @@
 //******************************************************************************
 //*     gcc port by Anton B. Gusev aka AHTOXA, Copyright (c) 2009-2012
 //
-// port to STM32VLDiscovery board by Alexey Dyachenko, Copyright (c) 2012
+// port to STM32EvalC board by Alexey Dyachenko, Copyright (c) 2012
 
 #include "stm32f10x.h"
 #include "IO/pin.h"
@@ -72,8 +72,8 @@ OS::TEventFlag Proc2Rec;
 //
 //      IO Pins
 //
-Pin<'C', 9> LED_GREEN;
-Pin<'C', 8> LED_BLUE;
+Pin<'D', 7> LED_GREEN;
+Pin<'D', 4> LED_BLUE;
 
 int main()
 {

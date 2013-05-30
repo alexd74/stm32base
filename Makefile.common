@@ -112,7 +112,7 @@ else
 		VPATH += $(TOPDIR)/Boards/STM3210C_EVAL
 		#
 		# individual source files
-		SRCS	+= board_io.cpp
+#		SRCS	+= board_io.cpp
 
 		ifdef USE_STM_PERIF_LIB
 			INCLUDES += -I$(TOPDIR)/Boards/STM3210C_EVAL/STM
