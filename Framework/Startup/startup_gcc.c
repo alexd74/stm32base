@@ -34,6 +34,8 @@ extern unsigned long __ctors_end__;
 extern unsigned long __dtors_start__;
 extern unsigned long __dtors_end__;
 
+extern unsigned long _eheap;
+
 void Reset_Handler(void) __attribute__((__interrupt__));
 extern int main(void);
 void __Init_Data(void);
@@ -44,11 +46,22 @@ void SystemInit(void);
 #endif
 #endif
 
+#ifdef USE_SIMULATOR
+void _exit(int status);
+unsigned long end;
+#endif
+
 void Reset_Handler(void)
 {
   __Init_Data();
 
+#ifdef USE_SIMULATOR
+  end = _eheap;
+
+  _exit( main() );
+#else
   main();
+#endif
 }
 
 void __Init_Data(void)
@@ -63,8 +76,10 @@ void __Init_Data(void)
   for(pulDest = &_sbss; pulDest < &_ebss; )
     *(pulDest++) = 0;
 
+#ifndef USE_SIMULATOR
   // init hardware before calling constructors
   SystemInit();
+#endif
 
   // Call constructors
   unsigned long *ctors;
