@@ -387,7 +387,7 @@ $(LIBRARY): $(OBJS) Makefile
 	@echo --- linking library ...
 	$(AR) -r $(LIBRARY) $(OBJS) 
 
-$(HEX): $(ELF)
+$(HEX): dirs $(ELF)
 	@echo --- make hex...
 	@$(OBJCOPY) -O ihex $(ELF) $(HEX)
 
@@ -435,10 +435,10 @@ cleanall: clean
 	rmdir $(LSTDIR)
 
 ifdef USE_SIMULATOR
-run: $(ELF)
+run: dirs $(ELF)
 	$(RUN) $(ELF)
 else
-run: $(ELF)
+run: dirs $(ELF)
 	$(GDB) -x $(RESOURCEDIR)/stlink.gdb $(ELF)
 endif
 
