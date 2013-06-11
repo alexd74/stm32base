@@ -358,7 +358,7 @@ LD_FLAGS	+= -Wl,--gc-sections
 LD_FLAGS	+= -T$(LD_SCRIPT)
 
 
-#.SILENT :
+.SILENT :
 
 .PHONY: all dirs build clean flash run
 
