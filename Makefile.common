@@ -181,8 +181,8 @@ ifeq ($(MCU),cortex-m3)
 	ifndef USE_SIMULATOR
 		# source directories (all *.c, *.cpp and *.S files included)
 		DIRS += $(TOPDIR)/Libraries/CMSIS3/CoreSupport
-	endif
 		DIRS += $(TOPDIR)/Libraries/CMSIS3/DeviceSupport/ST/STM32F10x
+	endif
 else
 	# includes
 	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/Include
