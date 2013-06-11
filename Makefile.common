@@ -360,7 +360,7 @@ LD_FLAGS	+= -T$(LD_SCRIPT)
 
 .SILENT :
 
-.PHONY: all dirs build clean flash run
+.PHONY: all dirs build clean flash run debug
 
 ############# targets
 
@@ -439,7 +439,15 @@ run: dirs $(ELF)
 	$(RUN) $(ELF)
 else
 run: dirs $(ELF)
-	$(GDB) -x $(RESOURCEDIR)/stlink.gdb $(ELF)
+	$(GDB) -x $(RESOURCEDIR)/stlink_run.gdb $(ELF)
+endif
+
+ifdef USE_SIMULATOR
+debug: dirs $(ELF)
+	$(GDB) -x $(RESOURCEDIR)/simulator.gdb $(ELF)
+else
+debug: dirs $(ELF)
+	$(GDB) -x $(RESOURCEDIR)/stlink_debug.gdb $(ELF)
 endif
 
 # dependencies
