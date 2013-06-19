@@ -259,6 +259,7 @@ ifdef RTOS
 
 		INCLUDES += -I$(SCMDIR)/Common
 		INCLUDES += -I$(SCMDIR)/Extensions/Profiler
+		INCLUDES += -I$(SCMDIR)/pin
 
 		DIRS	+= $(SCMDIR)/CortexM4F
 		INCLUDES += -I$(SCMDIR)/CortexM4F

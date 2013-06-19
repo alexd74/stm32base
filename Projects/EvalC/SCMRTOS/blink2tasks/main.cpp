@@ -47,7 +47,7 @@
 // port to STM32EvalC board by Alexey Dyachenko, Copyright (c) 2012
 
 #include "stm32f10x.h"
-#include "IO/pin.h"
+#include "pin.h"
 #include <scmRTOS.h>
 
 //---------------------------------------------------------------------------
