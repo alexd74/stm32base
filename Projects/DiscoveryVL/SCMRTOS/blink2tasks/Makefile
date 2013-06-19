@@ -6,7 +6,7 @@
 
 TOPDIR = ../../../..
 
-BOARD	= STM3210C
+BOARD	= DISCOVERY_VL
 
 #USE_STM_PERIF_LIB = 1
 RTOS = scmRTOS
