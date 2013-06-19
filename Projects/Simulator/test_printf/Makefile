@@ -4,7 +4,7 @@
 # Makefile template for STM32 base project
 #
 
-TOPDIR = ../..
+TOPDIR = ../../..
 #TOOL	= /opt/Sourcery_gcc/bin/arm-none-eabi-
 #TOOL	= /opt/Sourcery_gcc-4.5.2/bin/arm-none-eabi-
 #TOOL	= /opt/Sourcery_gcc-4.6.3/bin/arm-none-eabi-
@@ -33,5 +33,8 @@ PROJECT_LDFLAGS = -nostartfiles -nostdlib
 #PROJECT_LDFLAGS = -nostdlib
 #PROJECT_CWARNINGS =
 #PROJECT_CXXWARNINGS =
+
+# use small printf 
+SRCS += printf-stdarg.c
 
 include $(TOPDIR)/Makefile.common
