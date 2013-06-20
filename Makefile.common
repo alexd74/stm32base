@@ -185,10 +185,12 @@ ifeq ($(MCU),cortex-m3)
 	endif
 else
 	# includes
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/Include
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/ST/STM32F4xx/Include
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/CoreSupport
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/STM32F4xx
 
-	DIRS += $(TOPDIR)/Libraries/CMSIS4/ST/STM32F4xx/Source
+	ifndef USE_SIMULATOR
+		DIRS += $(TOPDIR)/Libraries/CMSIS4/STM32F4xx
+	endif
 
 	ifdef HARD_FLOAT
 		FLAGS += -fsingle-precision-constant -Wdouble-promotion
