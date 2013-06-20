@@ -213,6 +213,10 @@
   @{
  */
 
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-pedantic"
+#endif
+
 /** \brief  Union type to access the Application Program Status Register (APSR).
  */
 typedef union
@@ -291,6 +295,9 @@ typedef union
 
 /*@} end of group CMSIS_CORE */
 
+#ifdef __GNUC__
+#pragma GCC diagnostic warning "-pedantic"
+#endif
 
 /** \ingroup  CMSIS_core_register
     \defgroup CMSIS_NVIC CMSIS NVIC
