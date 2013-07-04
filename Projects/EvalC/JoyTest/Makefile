@@ -23,8 +23,4 @@ PROJECT_LDFLAGS = -nostartfiles -nostdlib
 
 SRCS	+= stm3210c_eval_lcd.c stm3210c_eval_ioe.c stm32_eval_spi_sd.c
 
-# use small printf 
-SRCS += printf-stdarg.c
-
-
 include $(TOPDIR)/Makefile.common
