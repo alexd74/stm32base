@@ -1,4 +1,4 @@
-This is a simble template for firmware development for stm32 microcontroller
+This is a simple template for firmware development for stm32 microcontroller
 with gcc compiler on linux host.
 
 In this template are integrated:
