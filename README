@@ -1,0 +1,27 @@
+This is a simble template for firmware development for stm32 microcontroller
+with gcc compiler on linux host.
+
+In this template are integrated:
+
+- startup files with interrupt vectors tables
+- STM StdPeriph libraries for F1XX and F4XX series
+- ScmRTOS realtime system
+- FreeRTOS realtime system
+- mini printf function
+- flashing and debugging with st-util
+- examples for STM3210C evaluation board
+- examples for STM32 VL Discovery evaluation board
+- examples for STM32 F4 Discovery evaluation board
+
+
+TODO: 
+- retarget printf to usart
+- integration new function for c++ projects
+- more examples
+
+For start you need:
+1) configure your compiler in Makefile.common
+2) run "sh ./make_libs.sh"
+3) build one example with "make"
+4) run st-util in other terminal
+5) run the application with "make run".
