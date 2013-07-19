@@ -198,8 +198,8 @@ else
 		PROJECT_LDFLAGS += -fsingle-precision-constant -Wdouble-promotion
 		PROJECT_LDFLAGS += -mfpu=fpv4-sp-d16 -mfloat-abi=hard
 	else
-		FLAGS + = -msoft-float
-		PROJECT_LDFLAGS + = -msoft-float
+		FLAGS += -msoft-float
+		PROJECT_LDFLAGS += -msoft-float
 	endif
 endif
 
