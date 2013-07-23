@@ -152,7 +152,7 @@ endif
 
 ifdef USART_RETARGET
 SRCS	+= printf-stdarg.c
-SRCS	+= usart.c
+SRCS	+= usart_retarget.c
 endif
 
 

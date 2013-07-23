@@ -28,6 +28,8 @@
 
 #include <stdarg.h>
 
+#undef putchar
+
 extern int putchar(int c);
 
 static void printchar(char **str, int c)
