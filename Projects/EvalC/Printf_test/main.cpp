@@ -43,11 +43,14 @@ int main(void)
   }
 
 
+#if 1
   char ch[30];
 
   printf("\r\n USART1 Test \r\n");
   printf("Enter any text: ");
+
 //  scanf("%s",ch);
+
   printf("\r\nYou entered: ");
   printf("%s\r\n",ch);
 
@@ -56,6 +59,7 @@ int main(void)
     printf("test\r\n");
     Delay( 500 );
   }
+#endif
 
 #if 0
   int32_t a1,a2;

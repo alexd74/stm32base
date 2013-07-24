@@ -151,8 +151,14 @@ endif
 
 
 ifdef USART_RETARGET
-SRCS	+= printf-stdarg.c
-SRCS	+= usart_retarget.c
+	SRCS	+= usart.c
+	ifeq ($(USART_RETARGET),MINI)
+		SRCS	+= printf-stdarg.c
+		PROJECT_FLAGS += -DUSART_RETARGET=MINI
+	else
+		SRCS	+= newlib_stubs.c
+		PROJECT_FLAGS += -DUSART_RETARGET=NEWLIB
+	endif
 endif
 
 

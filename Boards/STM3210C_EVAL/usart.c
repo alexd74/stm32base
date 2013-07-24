@@ -5,15 +5,14 @@
 
  }}} */
 
+#include <usart.h>
+
 #include <stdio.h>
 
 #include <stm32f10x.h>
 #include <stm32f10x_usart.h>
 
-#undef putchar
-#undef getchar
-
-int putchar( int ch )
+int usart_putchar( int ch )
 {
   // wait for usart free
   while ((USART2->SR & USART_FLAG_TC) == (uint16_t) RESET) { }
@@ -23,16 +22,14 @@ int putchar( int ch )
   return ch;
 }
 
-int getchar()
+int usart_getchar()
 {
   while ((USART2->SR & USART_FLAG_RXNE) == (uint16_t) RESET) {}
 
   return (char) (USART2->DR & (uint16_t) 0x01FF);
 }
 
-void init_usart()  __attribute__ ((constructor, used));
-
-void init_usart()
+void init_usart( int speed )
 {
 	USART_InitTypeDef USART_InitStructure;
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -55,7 +52,7 @@ void init_usart()
   GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
   GPIO_Init( GPIOD, &GPIO_InitStructure );
 
-  USART_InitStructure.USART_BaudRate = 115200;
+  USART_InitStructure.USART_BaudRate = speed;
   USART_InitStructure.USART_WordLength = USART_WordLength_8b;
   USART_InitStructure.USART_StopBits = USART_StopBits_1;
   USART_InitStructure.USART_Parity = USART_Parity_No;
@@ -68,3 +65,31 @@ void init_usart()
   /* Enable the  USART by setting the UE bit in the CR1 register */
   USART2->CR1 |= USART_CR1_UE;
 }
+
+#ifdef USART_RETARGET
+
+void usart_auto_init()  __attribute__ ((constructor, used));
+
+void usart_auto_init()
+{
+  init_usart( 115200 );
+}
+
+#if USART_RETARGET == MINI
+
+#undef putchar
+#undef getchar
+
+inline int putchar( int ch )
+{
+  return usart_putchar( ch );
+}
+
+int getchar()
+{
+  return usart_getchar();
+}
+
+#endif
+
+#endif
