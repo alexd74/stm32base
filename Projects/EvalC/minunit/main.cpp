@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file SysTick/main.h 
+  * @file    Project/Template/main.c
   * @author  MCD Application Team
   * @version V3.1.0
   * @date    06/19/2009
-  * @brief  Header for main.c module
+  * @brief   Main program body
   ******************************************************************************
   * @copy
   *
@@ -16,29 +16,55 @@
   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
   *
   * <h2><center>&copy; COPYRIGHT 2009 STMicroelectronics</center></h2>
-  */ 
-
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __MAIN_H
-#define __MAIN_H
+  */
 
 /* Includes ------------------------------------------------------------------*/
+#include <stdio.h>
+
 #include "stm32f10x.h"
 
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions ------------------------------------------------------- */
-#ifdef __cplusplus
- extern "C" {
-#endif
+#include "minunit.h"
 
-void TimingDelay_Decrement(void);
+int tests_run = 0;
 
-#ifdef __cplusplus
- }
-#endif
+int foo = 7;
+int bar = 5;
 
-#endif /* __MAIN_H */
+static const char * test_foo()
+{
+  mu_assert( "error, foo != 7", foo == 7 );
+  return 0;
+}
 
-/******************* (C) COPYRIGHT 2009 STMicroelectronics *****END OF FILE****/
+static const char * test_bar()
+{
+  mu_assert( "error, bar != 5", bar == 5 );
+  return 0;
+}
+
+static const char * all_tests()
+{
+  mu_run_test(test_foo);
+  mu_run_test(test_bar);
+  return 0;
+}
+
+
+
+int main(void)
+{
+  const char *result = all_tests();
+
+  if (result != 0)
+  {
+    printf("%s\n", result);
+  }
+  else
+  {
+    printf("ALL TESTS PASSED\n");
+  }
+
+  printf("Tests run: %d\n", tests_run);
+
+  return result != 0;
+}

@@ -5,6 +5,7 @@
 #
 
 TOPDIR = ../../..
+
 #TOOL	= /opt/Sourcery_gcc/bin/arm-none-eabi-
 #TOOL	= /opt/Sourcery_gcc-4.5.2/bin/arm-none-eabi-
 #TOOL	= /opt/Sourcery_gcc-4.6.3/bin/arm-none-eabi-
@@ -14,7 +15,6 @@ TOPDIR = ../../..
 
 #TOOL	= /opt/arm-none-eabi/bin/arm-none-eabi-
 
-#BOARD	= DISCOVERY_VL
 BOARD	= STM3210C
 
 #USE_STM_PERIF_LIB = 1

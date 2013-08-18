@@ -10,12 +10,11 @@
 #include <stdio.h>
 
 #include <stm32f10x.h>
-#include <stm32f10x_usart.h>
 
 int usart_putchar( int ch )
 {
   // wait for usart free
-  while ((USART2->SR & USART_FLAG_TC) == (uint16_t) RESET) { }
+  while ((USART2->SR & USART_SR_TC) == (uint16_t) RESET) { }
 
   USART2->DR = (unsigned char) ch;
 
@@ -24,7 +23,7 @@ int usart_putchar( int ch )
 
 int usart_getchar()
 {
-  while ((USART2->SR & USART_FLAG_RXNE) == (uint16_t) RESET) {}
+  while ((USART2->SR & USART_SR_RXNE) == (uint16_t) RESET) {}
 
   return (char) (USART2->DR & (uint16_t) 0x01FF);
 }
@@ -33,32 +32,25 @@ const unsigned int PCLK_FREQUENCY = 36000000UL;
 
 void init_usart( int baudrate )
 {
-  GPIO_InitTypeDef GPIO_InitStructure;
-
   USART2->CR1 &= ~USART_CR1_UE;
 
   /* Enable GPIO clock */
-/*  RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE );*/
   RCC->APB2ENR |= RCC_APB2ENR_AFIOEN | RCC_APB2ENR_IOPDEN;
 
     /* Enable the USART2 Pins Software Remapping */
-/*  GPIO_PinRemapConfig( GPIO_Remap_USART2, ENABLE );*/
-
   AFIO->MAPR |= AFIO_MAPR_USART2_REMAP;
 
-/*  RCC_APB1PeriphClockCmd( RCC_APB1Periph_USART2, ENABLE );*/
   RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
 
-  /* Configure USART Tx as alternate function push-pull */
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
-  GPIO_Init( GPIOD, &GPIO_InitStructure );
 
+  uint32_t tmpreg = GPIOD->CRH;
+  tmpreg &= ~( GPIO_CRL_MODE5 | GPIO_CRL_CNF5 | GPIO_CRL_MODE6 | GPIO_CRL_CNF6 );
   /* Configure USART Rx as input floating */
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
-  GPIO_Init( GPIOD, &GPIO_InitStructure );
+  tmpreg |= /* pin 6 as in floating*/           0x04 << ( 4 * 6 ) |
+  /* Configure USART Tx as alternate function push-pull */
+            /*pin 5 as AF_PP speed 50Mhz */     0x0B << ( 4 * 5 );
+
+  GPIOD->CRH = tmpreg;
 
   // no flow control
   USART2->CR3 = 0;

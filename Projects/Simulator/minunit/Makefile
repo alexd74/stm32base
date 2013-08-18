@@ -1,14 +1,8 @@
-#+---------------------------------------------------------------------------
 #
-#  Copyright (c) 2010 Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
+# Copyright (c) 2011 Alexey Dyachenko <alexd@inbox.ru>
 #
-#  File:       Makefile
+# Makefile template for STM32 base project
 #
-#  Contents:   makefile to build arm Cortex-M3 software with gcc
-#
-#----------------------------------------------------------------------------
-
-#############  program name
 
 TOPDIR = ../../..
 
@@ -19,20 +13,26 @@ TOPDIR = ../../..
 #TOOL	= /opt/arm-none-eabi/bin/arm-none-eabi-
 
 BOARD	= STM3210C
+
 #USE_STM_PERIF_LIB = 1
 #USE_USB = 1
 #RTOS = scmRTOS
 START_FROM_RAM = 1
-USART_RETARGET = MINI
+#USART_RETARGET = MINI
 #USART_RETARGET = NEWLIB
 
-TARGET		= printf_test
+TARGET		= miniunit
 OPTIMIZE	= -O2
+
+USE_SIMULATOR = 1
 
 #PROJECT_SRC = src
 PROJECT_FLAGS = -ggdb
 PROJECT_LDFLAGS = -nostartfiles -nostdlib
 #PROJECT_CWARNINGS =
 #PROJECT_CXXWARNINGS =
+
+# use small printf 
+SRCS += printf-stdarg.c
 
 include $(TOPDIR)/Makefile.common
