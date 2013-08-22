@@ -227,8 +227,12 @@ BASEFLAGS = $(FLAGS)
 ifdef USE_STM_PERIF_LIB
 	ifeq ($(MCU),cortex-m3)
 		INCLUDES += -I$(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/inc
-#		DIRS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/src
-		LIBS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/STM32F10x_StdPeriphLib.a
+
+		ifeq ($(BOARD),DISCOVERY_VL)
+			LIBS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/STM32F10x_StdPeriphLibVL.a
+		else
+			LIBS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/STM32F10x_StdPeriphLibCL.a
+		endif
 
 		BASEFLAGS += -include stm32f10x_conf.h
 	else

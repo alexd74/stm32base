@@ -1,18 +1,14 @@
 #+---------------------------------------------------------------------------
 #
-#  Copyright (c) 2010 Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
+# Copyright (c) 2011 Alexey Dyachenko <alexd@inbox.ru>
 #
-#  File:       Makefile
+# Makefile template for STM32 base project
 #
-#  Contents:   makefile to build arm Cortex-M3 software with gcc
-#
-#----------------------------------------------------------------------------
-
-#############  program name
 
 TOPDIR = ../../../..
 
 BOARD	= DISCOVERY_VL
+
 #USE_STM_PERIF_LIB = 1
 RTOS = scmRTOS
 START_FROM_RAM = 1

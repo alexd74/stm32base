@@ -1,18 +1,14 @@
 #+---------------------------------------------------------------------------
 #
-#  Copyright (c) 2010 Anton Gusev aka AHTOXA (HTTP://AHTOXA.NET)
+# Copyright (c) 2011 Alexey Dyachenko <alexd@inbox.ru>
 #
-#  File:       Makefile
+# Makefile template for STM32 base project
 #
-#  Contents:   makefile to build arm Cortex-M3 software with gcc
-#
-#----------------------------------------------------------------------------
-
-#############  program name
 
 TOPDIR = ../../..
 
 BOARD	= DISCOVERY_F4
+
 USE_STM_PERIF_LIB = 1
 #USE_USB = 1
 #RTOS = FreeRTOS
@@ -24,7 +20,7 @@ OPTIMIZE	= -O2
 #PROJECT_SRC = src
 #PROJECT_SRC = src 
 #PROJECT_INCLUDES = $(TOPDIR)/Libraries/STM32_USB_Device_Library/Class/hid/inc
-PROJECT_FLAGS = -ggdb 
+PROJECT_FLAGS = -ggdb
 PROJECT_LDFLAGS = -nostartfiles -nostdlib
 #PROJECT_CWARNINGS =
 #PROJECT_CXXWARNINGS =
