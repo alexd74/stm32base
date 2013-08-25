@@ -30,6 +30,45 @@ int usart_getchar()
 
 const unsigned int PCLK_FREQUENCY = 36000000UL;
 
+#if 0
+void init_usart( int baudrate )
+{
+	USART_InitTypeDef USART_InitStructure;
+  GPIO_InitTypeDef GPIO_InitStructure;
+
+  /* Enable GPIO clock */
+  RCC_APB2PeriphClockCmd( RCC_APB2Periph_GPIOD | RCC_APB2Periph_AFIO, ENABLE );
+
+    /* Enable the USART2 Pins Software Remapping */
+  GPIO_PinRemapConfig( GPIO_Remap_USART2, ENABLE );
+  RCC_APB1PeriphClockCmd( RCC_APB1Periph_USART2, ENABLE );
+
+  /* Configure USART Tx as alternate function push-pull */
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  GPIO_Init( GPIOD, &GPIO_InitStructure );
+
+  /* Configure USART Rx as input floating */
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+  GPIO_Init( GPIOD, &GPIO_InitStructure );
+
+  USART_InitStructure.USART_BaudRate = baudrate;
+  USART_InitStructure.USART_WordLength = USART_WordLength_8b;
+  USART_InitStructure.USART_StopBits = USART_StopBits_1;
+  USART_InitStructure.USART_Parity = USART_Parity_No;
+  USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
+  USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
+
+  /* USART configuration */
+  USART_Init( USART2, &USART_InitStructure );
+
+  /* Enable the  USART by setting the UE bit in the CR1 register */
+  USART2->CR1 |= USART_CR1_UE;
+}
+
+#else
 void init_usart( int baudrate )
 {
   USART2->CR1 &= ~USART_CR1_UE;
@@ -43,14 +82,14 @@ void init_usart( int baudrate )
   RCC->APB1ENR |= RCC_APB1ENR_USART2EN;
 
 
-  uint32_t tmpreg = GPIOD->CRH;
+  uint32_t tmpreg = GPIOD->CRL;
   tmpreg &= ~( GPIO_CRL_MODE5 | GPIO_CRL_CNF5 | GPIO_CRL_MODE6 | GPIO_CRL_CNF6 );
   /* Configure USART Rx as input floating */
   tmpreg |= /* pin 6 as in floating*/           0x04 << ( 4 * 6 ) |
   /* Configure USART Tx as alternate function push-pull */
             /*pin 5 as AF_PP speed 50Mhz */     0x0B << ( 4 * 5 );
 
-  GPIOD->CRH = tmpreg;
+  GPIOD->CRL = tmpreg;
 
   // no flow control
   USART2->CR3 = 0;
@@ -64,6 +103,7 @@ void init_usart( int baudrate )
   /* Enable the  USART by setting the UE bit in the CR1 register */
   USART2->CR1 |= USART_CR1_UE;
 }
+#endif
 
 #ifdef USART_RETARGET
 

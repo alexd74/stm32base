@@ -13,16 +13,16 @@ TOPDIR = ../../..
 #TOOL	= /opt/Sourcery_gcc-4.7.2/bin/arm-none-eabi-
 #TOOL	= /opt/arm-none-eabi/bin/arm-none-eabi-
 
-BOARD	= DISCOVERY_F4
+BOARD	= DISCOVERY_VL
 
-USE_STM_PERIF_LIB = 1
+#USE_STM_PERIF_LIB = 1
 #USE_USB = 1
-#RTOS = FreeRTOS
+#RTOS = scmRTOS
 START_FROM_RAM = 1
 USART_RETARGET = MINI
 #USART_RETARGET = NEWLIB
 
-TARGET		= target
+TARGET		= printf_test
 OPTIMIZE	= -O2
 
 #PROJECT_SRC = src
@@ -30,8 +30,5 @@ PROJECT_FLAGS = -ggdb
 PROJECT_LDFLAGS = -nostartfiles -nostdlib
 #PROJECT_CWARNINGS =
 #PROJECT_CXXWARNINGS =
-
-#VPATH += $(TOPDIR)/Libraries/STM32_USB_Device_Library/Class/hid/src
-#SRCS += usb_dcd_int.c usb_dcd.c usbd_core.c usbd_req.c usbd_ioreq.c usbd_hid_core.c
 
 include $(TOPDIR)/Makefile.common

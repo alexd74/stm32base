@@ -14,6 +14,7 @@ TOPDIR = ../../..
 #TOOL	= /opt/arm-none-eabi/bin/arm-none-eabi-
 
 BOARD	= STM3210C
+
 #USE_STM_PERIF_LIB = 1
 #USE_USB = 1
 #RTOS = scmRTOS

@@ -41,9 +41,14 @@ int main(void)
 
   printf("\r\n USART1 Test \r\n");
   printf("Enter any text: ");
+
+  for( int i = 0; i < 5; ++i )
+    usart_putchar( usart_getchar() );
+
 //  scanf("%s",ch);
-  printf("\r\nYou entered: ");
-  printf("%s\r\n",ch);
+
+//  printf("\r\nYou entered: ");
+//  printf("%s\r\n",ch);
 
 #if 0
   while (1)
