@@ -311,6 +311,10 @@ else
 	LD_SCRIPT	= $(RESOURCEDIR)/$(CHIP).ld
 endif
 
+ifdef PROJECT_LD
+	LD_SCRIPT = $(PROJECT_LD)
+endif
+
 ifdef LIBRARY
 	SRCS =
 	DIRS = src
@@ -327,10 +331,12 @@ VPATH += $(DIRS)
 #calc obj files list
 OBJS	:= $(SRCS)
 OBJS	+= $(wildcard $(addsuffix /*.cpp, $(DIRS)))
+OBJS	+= $(wildcard $(addsuffix /*.cc, $(DIRS)))
 OBJS	+= $(wildcard $(addsuffix /*.c, $(DIRS)))
 OBJS	+= $(wildcard $(addsuffix /*.S, $(DIRS)))
 OBJS	:= $(notdir $(OBJS))
 OBJS	:= $(OBJS:.cpp=.o)
+OBJS	:= $(OBJS:.cc=.o)
 OBJS	:= $(OBJS:.c=.o)
 OBJS	:= $(OBJS:.S=.o)
 OBJS	:= $(patsubst %, $(OBJDIR)/%, $(OBJS))
@@ -411,6 +417,10 @@ flash: $(HEX)
 
 $(OBJDIR)/%.o: %.cpp
 	@echo --- compiling $(*F).cpp
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o: %.cc
+	@echo --- compiling $(*F).cc
 	$(CXX) -c $(CXXFLAGS) -o $@ $<
 
 $(OBJDIR)/%.o: %.c
