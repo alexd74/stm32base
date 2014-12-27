@@ -1,0 +1,13 @@
+CHIP = STM32F10X_LD_VL
+MCU	= cortex-m3
+
+INCLUDES += -I$(TOPDIR)/Boards/STM32VL_EVAL
+VPATH += $(TOPDIR)/Boards/STM32VL_EVAL
+
+ifdef USE_STM_PERIF_LIB
+  INCLUDES += -I$(TOPDIR)/Boards/STM32VL_EVAL/STM
+  VPATH += $(TOPDIR)/Boards/STM32VL_EVAL/STM
+  # individual source files
+  SRCS	+= STM32vldiscovery.c
+endif
+

@@ -9,16 +9,19 @@ TOPDIR = ../..
 
 OPTIMIZE	= -O2
 
-#BOARD	= STM3210C
-BOARD	= DISCOVERY_VL
+MCU	= cortex-m3
+ifndef CHIP
+	CHIP = STM32F10X_LD_VL
+endif
 USE_STM_PERIF_LIB = 1
-#RTOS = scmRTOS
-#START_FROM_RAM = 1
 
 TARGET		= test
 
-#LIBRARY = STM32F10x_StdPeriphLibCL.a
-LIBRARY = STM32F10x_StdPeriphLibVL.a
+ifeq ($(CHIP),STM32F10X_LD_VL)
+	LIBRARY = STM32F10x_StdPeriphLibVL.a
+else
+	LIBRARY = STM32F10x_StdPeriphLibCL.a
+endif
 
 PROJECT_SRC = src
 PROJECT_FLAGS = -ggdb

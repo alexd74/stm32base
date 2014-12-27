@@ -1,0 +1,116 @@
+#  Copyright (c) 2012 Alexey Dyachenko <alexd@inbox.ru>
+#  
+#  Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+#  and associated documentation files (the "Software"), to deal in the Software without restriction,
+#  including without limitation the rights to use, copy, modify, merge, publish, distribute,
+#  sublicense, and/or sell copies of the Software, and to permit persons to whom the Software
+#  is furnished to do so, subject to the following conditions:
+#  
+#  The above copyright notice and this permission notice shall be included in all copies
+#  or substantial portions of the Software.
+#  
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+#  INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
+#  AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+#  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+.SILENT :
+
+.PHONY: all dirs build clean flash run debug
+
+############# targets
+
+all : dirs $(ELF) $(HEX) $(LSS) $(OK)
+
+build: clean all
+
+lib : $(LIBRARY)
+
+$(LSS): $(ELF) Makefile
+	@echo --- making asm-lst...
+#	@$(OBJDUMP) -dStC $(ELF) > $(LSS)
+	@$(OBJDUMP) -dC $(ELF) > $(LSS)
+
+$(OK): $(ELF)
+	@$(SIZE) $(ELF)
+	@echo "Errors: none"
+
+$(ELF):	$(OBJS) Makefile
+	@echo --- linking...
+	$(LD) $(OBJS) $(LD_FLAGS) $(LIBS) -o "$(ELF)"
+
+$(LIBRARY): $(OBJS) Makefile
+	@echo --- linking library ...
+	$(AR) -r $(LIBRARY) $(OBJS) 
+
+$(HEX): dirs $(ELF)
+	@echo --- make hex...
+	@$(OBJCOPY) -O ihex $(ELF) $(HEX)
+
+flash: $(HEX)
+	@echo "Programming with stm32flash"
+	stm32flash -w $(HEX) -v -g 0x0 /dev/ttyS0
+
+
+$(OBJDIR)/%.o: %.cpp
+	@echo --- compiling $(*F).cpp
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o: %.cc
+	@echo --- compiling $(*F).cc
+	$(CXX) -c $(CXXFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o: %.c
+	@echo --- compiling $(*F).c
+	$(CC) -c $(CFLAGS) -o $@ $<
+
+$(OBJDIR)/%.o: %.S
+	@echo --- assembling $(*F).S
+	$(AS) -c $(AFLAGS) -o $@ $<
+
+dirs: $(OBJDIR) $(EXEDIR) $(LSTDIR)
+
+$(OBJDIR):
+	-@$(MD) $(OBJDIR)
+
+$(EXEDIR):
+	-@$(MD) $(EXEDIR)
+
+$(LSTDIR):
+	-@$(MD) $(LSTDIR)
+
+clean:
+	-@$(RM) $(OBJDIR)/*.d 2>/dev/null
+	-@$(RM) $(OBJDIR)/*.o 2>/dev/null
+	-@$(RM) $(EXEDIR)/*.hex 2>/dev/null
+	-@$(RM) $(EXEDIR)/*.bin 2>/dev/null
+	-@$(RM) $(EXEDIR)/*.elf 2>/dev/null
+	-@$(RM) $(LSTDIR)/*.lst 2>/dev/null
+	-@$(RM) $(LSTDIR)/*.lss 2>/dev/null
+	-@$(RM) $(LSTDIR)/*.map 2>/dev/null
+
+cleanall: clean
+	rmdir $(OBJDIR)
+	rmdir $(EXEDIR)
+	rmdir $(LSTDIR)
+
+ifdef USE_SIMULATOR
+run: dirs $(ELF)
+	$(RUN) $(ELF)
+else
+run: dirs $(ELF)
+	$(GDB) -x $(RESOURCEDIR)/stlink_run.gdb $(ELF)
+endif
+
+ifdef USE_SIMULATOR
+debug: dirs $(ELF)
+	$(GDB) -x $(RESOURCEDIR)/simulator.gdb $(ELF)
+else
+debug: dirs $(ELF)
+	$(GDB) -x $(RESOURCEDIR)/stlink_debug.gdb $(ELF)
+endif
+
+# dependencies
+include $(wildcard $(OBJDIR)/*.d) 

@@ -2,7 +2,9 @@
 
 pushd Libraries/STM32F10x_StdPeriph_Driver/
 
-make
+make CHIP=STM32F10X_LD_VL
+make cleanall
+make CHIP=STM32F10X_CL
 make cleanall
 
 popd
