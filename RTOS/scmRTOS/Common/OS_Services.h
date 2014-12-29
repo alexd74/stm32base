@@ -8,8 +8,8 @@
 //*
 //*     Version: 4.00
 //*
-//*     $Revision$
-//*     $Date::             $
+//*     $Revision: 583 $
+//*     $Date:: 2014-03-11 #$
 //*
 //*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
@@ -54,7 +54,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TService : public TKernelAgent
+    class TService : protected TKernelAgent
     {
     protected:
         TService() : TKernelAgent() { }
@@ -190,7 +190,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TEventFlag : public TService
+    class TEventFlag : protected TService
     {
     public:
         enum TValue { efOn = 1, efOff= 0 };     // prefix 'ef' means: "Event Flag"
@@ -227,7 +227,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TMutex : public TService
+    class TMutex : protected TService
     {
     public:
         INLINE TMutex() : ProcessMap(0), ValueTag(0) { }
@@ -235,7 +235,8 @@ namespace OS
                void unlock();
         INLINE void unlock_isr();
 
-        INLINE bool lock_softly()     { TCritSect cs; if(ValueTag) return false; else lock(); return true; }
+        INLINE bool try_lock()       { TCritSect cs; if(ValueTag) return false; else lock(); return true; }
+               bool try_lock(timeout_t timeout);
         INLINE bool is_locked() const { TCritSect cs; return ValueTag != 0; }
 
     #if scmRTOS_OBSOLETE_NAMES == 1
@@ -244,6 +245,7 @@ namespace OS
         INLINE void UnlockISR()      { unlock_isr(); }
         INLINE bool LockSoftly()     { return lock_softly(); }
         INLINE bool IsLocked() const { return is_locked(); }
+        INLINE bool lock_softly()    { return try_lock(); }
     #endif
 
     protected:
@@ -271,7 +273,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TChannel : public TService
+    class TChannel : protected TService
     {
     public:
         INLINE TChannel(uint8_t* buf, uint8_t size) : Cbuf(buf, size) { }
@@ -311,7 +313,7 @@ namespace OS
     //
     //
     template<typename T, uint16_t Size, typename S = uint8_t>
-    class channel : public TService
+    class channel : protected TService
     {
     public:
         INLINE channel() : ProducersProcessMap(0)
@@ -358,7 +360,7 @@ namespace OS
     //       DESCRIPTION:
     //
     //
-    class TBaseMessage : public TService
+    class TBaseMessage : protected TService
     {
     public:
         INLINE TBaseMessage() : ProcessMap(0), NonEmpty(false) { }

@@ -8,8 +8,8 @@
 //*               
 //*     Version: 4.00
 //*
-//*     $Revision$
-//*     $Date::             $
+//*     $Revision: 546 $
+//*     $Date:: 2012-05-15 #$
 //*
 //*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*

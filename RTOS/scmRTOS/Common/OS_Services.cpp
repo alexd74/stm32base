@@ -8,8 +8,8 @@
 //*
 //*     Version: 4.00
 //*
-//*     $Revision$
-//*     $Date::             $
+//*     $Revision: 583 $
+//*     $Date:: 2014-03-11 #$
 //*
 //*     Copyright (c) 2003-2012, Harry E. Zhurov
 //*
@@ -134,6 +134,23 @@ void OS::TMutex::lock()
         suspend(ProcessMap);
     }
     ValueTag = cur_proc_prio_tag();                     // mutex has been successfully locked
+}
+//------------------------------------------------------------------------------
+bool OS::TMutex::try_lock(timeout_t timeout)
+{
+    TCritSect cs;
+
+    while (ValueTag)
+    {
+        // mutex already locked by another process, suspend current process
+        cur_proc_timeout() = timeout;
+        suspend(ProcessMap);
+        if(is_timeouted(ProcessMap))
+            return false;             // waked up by timeout or by externals
+        cur_proc_timeout() = 0;
+    }
+    ValueTag = cur_proc_prio_tag();   // mutex has been successfully locked
+    return true;
 }
 //------------------------------------------------------------------------------
 void OS::TMutex::unlock()
