@@ -97,20 +97,6 @@ ifdef BOARD
 	include $(TOPDIR)/Makefiles/BOARD.$(BOARD)
 endif
 
-#ifeq ($(BOARD),DISCOVERY_VL)
-#	include $(TOPDIR)/Makefiles/BOARD.$(BOARD)
-#else
-#	ifeq ($(BOARD),STM3210C)
-#		include $(TOPDIR)/Makefiles/BOARD.$(BOARD)
-#	else
-#		ifeq ($(BOARD),DISCOVERY_F4)
-#			include $(TOPDIR)/Makefiles/BOARD.$(BOARD)
-#		else
-#			error "Board is not defined"
-#		endif
-#	endif
-#endif
-
 ifeq ($(MCU),)
 $(error MCU not set)
 endif
@@ -151,21 +137,21 @@ FLAGS	+= $(PROJECT_FLAGS)
 
 ifeq ($(MCU),cortex-m3)
 	# includes
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS3/CoreSupport
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS3/DeviceSupport/ST/STM32F10x
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Include
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/ST/STM32F10x
 
 	ifndef USE_SIMULATOR
 		# source directories (all *.c, *.cpp and *.S files included)
-		DIRS += $(TOPDIR)/Libraries/CMSIS3/CoreSupport
-		DIRS += $(TOPDIR)/Libraries/CMSIS3/DeviceSupport/ST/STM32F10x
+#		DIRS += $(TOPDIR)/Libraries/CMSIS/Include
+		DIRS += $(TOPDIR)/Libraries/CMSIS/ST/STM32F10x
 	endif
 else
 	# includes
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/CoreSupport
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS4/STM32F4xx
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Include
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/ST/STM32F4xx
 
 	ifndef USE_SIMULATOR
-		DIRS += $(TOPDIR)/Libraries/CMSIS4/STM32F4xx
+		DIRS += $(TOPDIR)/Libraries/CMSIS/ST/STM32F4xx
 	endif
 
 	ifdef HARD_FLOAT
