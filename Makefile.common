@@ -135,23 +135,22 @@ FLAGS	+= -D$(CHIP)
 #FLAGS	+= -g
 FLAGS	+= $(PROJECT_FLAGS)
 
+INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Include
+
 ifeq ($(MCU),cortex-m3)
 	# includes
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Include
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/ST/STM32F10x
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Device/ST/STM32F10x
 
 	ifndef USE_SIMULATOR
 		# source directories (all *.c, *.cpp and *.S files included)
-#		DIRS += $(TOPDIR)/Libraries/CMSIS/Include
-		DIRS += $(TOPDIR)/Libraries/CMSIS/ST/STM32F10x
+		DIRS += $(TOPDIR)/Libraries/CMSIS/Device/ST/STM32F10x
 	endif
 else
 	# includes
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Include
-	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/ST/STM32F4xx
+	INCLUDES += -I$(TOPDIR)/Libraries/CMSIS/Device/ST/STM32F4xx
 
 	ifndef USE_SIMULATOR
-		DIRS += $(TOPDIR)/Libraries/CMSIS/ST/STM32F4xx
+		DIRS += $(TOPDIR)/Libraries/CMSIS/Device/ST/STM32F4xx
 	endif
 
 	ifdef HARD_FLOAT
