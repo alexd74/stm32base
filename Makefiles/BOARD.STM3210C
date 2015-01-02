@@ -13,7 +13,7 @@ ifdef USE_STM_PERIF_LIB
   INCLUDES += -I$(TOPDIR)/Boards/STM3210C_EVAL/STM
   VPATH += $(TOPDIR)/Boards/STM3210C_EVAL/STM
   # individual source files
-  SRCS	+= stm32_eval.c
+  SRCS	+= stm3210c_eval.c
   #			SRCS	+= stm3210c_eval_lcd.c stm3210c_eval_ioe.c stm32_eval_spi_sd.c
   #			stm32_eval_i2c_tsensor.c  stm32_eval_spi_flash.c  stm32_eval_sdio_sd.c  stm32_eval_i2c_ee.c
 endif

@@ -21,6 +21,6 @@ PROJECT_LDFLAGS = -nostartfiles -nostdlib
 #PROJECT_CWARNINGS =
 #PROJECT_CXXWARNINGS =
 
-SRCS	+= stm3210c_eval_lcd.c stm3210c_eval_ioe.c stm32_eval_spi_sd.c
+SRCS	+= stm3210c_eval_lcd.c stm3210c_eval_ioe.c
 
 include $(TOPDIR)/Makefile.common

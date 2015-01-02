@@ -1,12 +1,11 @@
 /**
   ******************************************************************************
-  * @file    stm32_eval_i2c_ee.c
+  * @file    stm3210c_eval_i2c_ee.c
   * @author  MCD Application Team
-  * @version V4.5.0
-  * @date    07-March-2011
+  * @version V5.0.1
+  * @date    05-March-2012
   * @brief   This file provides a set of functions needed to manage the I2C M24CXX
-  *          EEPROM memory mounted on STM32xx-EVAL board (refer to stm32_eval.h
-  *          to know about the boards supporting this memory).
+  *          EEPROM memory mounted on STM3210C-EVAL board.
   *
   *          ===================================================================
   *          Note: This driver is intended for STM32F10x families devices only.
@@ -14,8 +13,8 @@
   *
   *          It implements a high level communication layer for read and write
   *          from/to this memory. The needed STM32 hardware resources (I2C and
-  *          GPIO) are defined in stm32xx_eval.h file, and the initialization is
-  *          performed in sEE_LowLevel_Init() function declared in stm32xx_eval.c
+  *          GPIO) are defined in stm3210c_eval.h file, and the initialization is
+  *          performed in sEE_LowLevel_Init() function declared in stm3210c_eval.c
   *          file.
   *          You can easily tailor this driver to any other development board,
   *          by just adapting the defines for hardware resources and
@@ -49,19 +48,25 @@
   ******************************************************************************
   * @attention
   *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
   *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  * You may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at:
+  *
+  *        http://www.st.com/software_license_agreement_liberty_v2
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  *
   ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32_eval_i2c_ee.h"
+#include "stm3210c_eval_i2c_ee.h"
 
 /** @addtogroup Utilities
   * @{
@@ -71,24 +76,16 @@
   * @{
   */
 
-/** @addtogroup Common
+/** @addtogroup STM3210C_EVAL
   * @{
   */
 
-/** @addtogroup STM32_EVAL_I2C_EE
-  * @brief      This file includes the I2C EEPROM driver of STM32-EVAL boards.
+/** @addtogroup STM3210C_EVAL_I2C_EE
+  * @brief      This file includes the I2C EEPROM driver of STM3210C-EVAL board.
   * @{
   */
 
-/** @defgroup STM32_EVAL_I2C_EE_Private_Types
-  * @{
-  */
-/**
-  * @}
-  */
-
-
-/** @defgroup STM32_EVAL_I2C_EE_Private_Defines
+/** @defgroup STM3210C_EVAL_I2C_EE_Private_Types
   * @{
   */
 /**
@@ -96,7 +93,7 @@
   */
 
 
-/** @defgroup STM32_EVAL_I2C_EE_Private_Macros
+/** @defgroup STM3210C_EVAL_I2C_EE_Private_Defines
   * @{
   */
 /**
@@ -104,7 +101,15 @@
   */
 
 
-/** @defgroup STM32_EVAL_I2C_EE_Private_Variables
+/** @defgroup STM3210C_EVAL_I2C_EE_Private_Macros
+  * @{
+  */
+/**
+  * @}
+  */
+
+
+/** @defgroup STM3210C_EVAL_I2C_EE_Private_Variables
   * @{
   */
 __IO uint16_t  sEEAddress = 0;
@@ -117,7 +122,7 @@ __IO uint8_t   sEEDataNum;
   */
 
 
-/** @defgroup STM32_EVAL_I2C_EE_Private_Function_Prototypes
+/** @defgroup STM3210C_EVAL_I2C_EE_Private_Function_Prototypes
   * @{
   */
 /**
@@ -125,7 +130,7 @@ __IO uint8_t   sEEDataNum;
   */
 
 
-/** @defgroup STM32_EVAL_I2C_EE_Private_Functions
+/** @defgroup STM3210C_EVAL_I2C_EE_Private_Functions
   * @{
   */
 
@@ -671,7 +676,7 @@ uint32_t sEE_WaitEepromStandbyState(void)
 
   /* Keep looping till the slave acknowledge his address or maximum number
      of trials is reached (this number is defined by sEE_MAX_TRIALS_NUMBER define
-     in stm32_eval_i2c_ee.h file) */
+     in stm3210c_eval_i2c_ee.h file) */
   while (1)
   {
     /*!< Send START condition */
@@ -851,4 +856,4 @@ void sEE_ExitCriticalSection_UserCallback(void)
   * @}
   */
 
-/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

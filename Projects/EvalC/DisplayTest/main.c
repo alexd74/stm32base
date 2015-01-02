@@ -21,7 +21,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
-#include "stm32_eval.h"
+#include "stm3210c_eval.h"
 #include <stdio.h>
 
 #ifdef USE_STM32100B_EVAL

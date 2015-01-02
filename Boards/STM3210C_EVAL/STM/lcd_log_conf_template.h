@@ -1,10 +1,15 @@
 /**
   ******************************************************************************
-  * @file    fonts.h
+  * @file    lcd_log_conf_template.h
   * @author  MCD Application Team
   * @version V5.0.2
   * @date    05-March-2012
-  * @brief   Header for fonts.c file
+  * @brief   lcd_log configuration template file.
+  *          This file should be copied to the application folder and modified
+  *          as follows:
+  *            - Rename it to 'lcd_log_conf.h'.
+  *            - Update the name of the LCD header file depending on the EVAL board
+  *              you are using (see line32 below).
   ******************************************************************************
   * @attention
   *
@@ -26,92 +31,76 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __FONTS_H
-#define __FONTS_H
-
-#ifdef __cplusplus
- extern "C" {
-#endif
+#ifndef  __LCD_LOG_CONF_H__
+#define  __LCD_LOG_CONF_H__
 
 /* Includes ------------------------------------------------------------------*/
-#include <stdint.h>
+#include "stm3210c_eval_lcd.h" /* replace 'stm32xxx' with your EVAL board name, ex: stm3210c_eval_lcd.h */
+#include <stdio.h>
 
-/** @addtogroup Utilities
+/** @addtogroup LCD_LOG
   * @{
   */
 
-/** @addtogroup STM32_EVAL
+/** @defgroup LCD_LOG
+  * @brief This file is the
   * @{
   */
 
-/** @addtogroup Common
+
+/** @defgroup LCD_LOG_CONF_Exported_Defines
   * @{
   */
+/* Comment the line below to disable the scroll back and forward features */
+#define LCD_SCROLL_ENABLED
 
-/** @addtogroup FONTS
+/* Define the LCD default text color */
+#define LCD_LOG_DEFAULT_COLOR    LCD_COLOR_WHITE
+
+/* Define the display window settings */
+#define YWINDOW_MIN              3
+#define YWINDOW_SIZE             12
+#define XWINDOW_MAX              50
+
+/* Define the cache depth */
+#define CACHE_SIZE               50
+
+/** @defgroup LCD_LOG_CONF_Exported_TypesDefinitions
   * @{
-  */
-
-/** @defgroup FONTS_Exported_Types
-  * @{
-  */
-typedef struct _tFont
-{
-  const uint16_t *table;
-  uint16_t Width;
-  uint16_t Height;
-
-} sFONT;
-
-extern sFONT Font16x24;
-extern sFONT Font12x12;
-extern sFONT Font8x12;
-extern sFONT Font8x8;
-
-/**
-  * @}
-  */
-
-/** @defgroup FONTS_Exported_Constants
-  * @{
-  */
-#define LINE(x) ((x) * (((sFONT *)LCD_GetFont())->Height))
-
-/**
-  * @}
-  */
-
-/** @defgroup FONTS_Exported_Macros
-  * @{
-  */
-/**
-  * @}
-  */
-
-/** @defgroup FONTS_Exported_Functions
-  * @{
-  */
-/**
-  * @}
-  */
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* __FONTS_H */
-
-/**
-  * @}
   */
 
 /**
   * @}
   */
 
+
+/** @defgroup LCD_LOG_Exported_Macros
+  * @{
+  */
+
+
 /**
   * @}
   */
+
+/** @defgroup LCD_LOG_CONF_Exported_Variables
+  * @{
+  */
+
+/**
+  * @}
+  */
+
+/** @defgroup LCD_LOG_CONF_Exported_FunctionsPrototype
+  * @{
+  */
+
+/**
+  * @}
+  */
+
+
+#endif /* __LCD_LOG_H__ */
 
 /**
   * @}

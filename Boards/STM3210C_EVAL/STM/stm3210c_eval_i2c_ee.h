@@ -1,35 +1,41 @@
 /**
   ******************************************************************************
-  * @file    stm32_eval_i2c_ee.h
+  * @file    stm3210c_eval_i2c_ee.h
   * @author  MCD Application Team
-  * @version V4.5.0
-  * @date    07-March-2011
-  * @brief   This file contains all the functions prototypes for the stm32_eval_i2c_ee
+  * @version V5.0.1
+  * @date    05-March-2012
+  * @brief   This file contains all the functions prototypes for the stm3210c_eval_i2c_ee
   *          firmware driver.
   ******************************************************************************
   * @attention
   *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
   *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
+  * You may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at:
+  *
+  *        http://www.st.com/software_license_agreement_liberty_v2
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  *
   ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32_EVAL_I2C_EE_H
-#define __STM32_EVAL_I2C_EE_H
+#ifndef __STM3210C_EVAL_I2C_EE_H
+#define __STM3210C_EVAL_I2C_EE_H
 
 #ifdef __cplusplus
  extern "C" {
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm32_eval.h"
+#include "stm3210c_eval.h"
 
 /** @addtogroup Utilities
   * @{
@@ -39,15 +45,15 @@
   * @{
   */
 
-/** @addtogroup Common
+/** @addtogroup STM3210C_EVAL
   * @{
   */
 
-/** @addtogroup STM32_EVAL_I2C_EE
+/** @addtogroup STM3210C_EVAL_I2C_EE
   * @{
   */
 
-/** @defgroup STM32_EVAL_I2C_EE_Exported_Types
+/** @defgroup STM3210C_EVAL_I2C_EE_Exported_Types
   * @{
   */
 
@@ -55,7 +61,7 @@
   * @}
   */
 
-/** @defgroup STM32_EVAL_I2C_EE_Exported_Constants
+/** @defgroup STM3210C_EVAL_I2C_EE_Exported_Constants
   * @{
   */
 
@@ -70,7 +76,7 @@
    application */
 
 /* Uncomment the following line to use the default sEE_TIMEOUT_UserCallback()
-   function implemented in stm32_evel_i2c_ee.c file.
+   function implemented in stm3210c_eval_i2c_ee.c file.
    sEE_TIMEOUT_UserCallback() function is called whenever a timeout condition
    occure during communication (waiting on an event that doesn't occur, bus
    errors, busy devices ...). */
@@ -133,14 +139,14 @@
   * @}
   */
 
-/** @defgroup STM32_EVAL_I2C_EE_Exported_Macros
+/** @defgroup STM3210C_EVAL_I2C_EE_Exported_Macros
   * @{
   */
 /**
   * @}
   */
 
-/** @defgroup STM32_EVAL_I2C_EE_Exported_Functions
+/** @defgroup STM3210C_EVAL_I2C_EE_Exported_Functions
   * @{
   */
 void     sEE_DeInit(void);
@@ -156,7 +162,7 @@ uint32_t sEE_WaitEepromStandbyState(void);
    occure during communication (waiting on an event that doesn't occur, bus
    errors, busy devices ...).
    You can use the default timeout callback implementation by uncommenting the
-   define USE_DEFAULT_TIMEOUT_CALLBACK in stm32_evel_i2c_ee.h file.
+   define USE_DEFAULT_TIMEOUT_CALLBACK in stm3210c_eval_i2c_ee.h file.
    Typically the user implementation of this callback should reset I2C peripheral
    and re-initialize communication or in worst case reset all the application. */
 uint32_t sEE_TIMEOUT_UserCallback(void);
@@ -164,7 +170,7 @@ uint32_t sEE_TIMEOUT_UserCallback(void);
 /* Start and End of critical section: these callbacks should be typically used
    to disable interrupts when entering a critical section of I2C communication
    You may use default callbacks provided into this driver by uncommenting the
-   define USE_DEFAULT_CRITICAL_CALLBACK in stm32_evel_i2c_ee.h file..
+   define USE_DEFAULT_CRITICAL_CALLBACK in stm3210c_eval_i2c_ee.h file..
    Or you can comment that line and implement these callbacks into your
    application */
 void sEE_EnterCriticalSection_UserCallback(void);
@@ -175,7 +181,7 @@ void sEE_ExitCriticalSection_UserCallback(void);
 }
 #endif
 
-#endif /* __STM32_EVAL_I2C_EE_H */
+#endif /* __STM3210C_EVAL_I2C_EE_H */
 /**
   * @}
   */
@@ -196,6 +202,6 @@ void sEE_ExitCriticalSection_UserCallback(void);
   * @}
   */
 
-/******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
+/************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 
 
