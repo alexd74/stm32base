@@ -59,6 +59,8 @@ void Reset_Handler(void)
   _exit( main() );
 #else
   main();
+
+  while( 1 );
 #endif
 }
 
