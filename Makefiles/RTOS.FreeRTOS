@@ -1,0 +1,20 @@
+# FreeRTOS dir
+FREERTOS_DIR		= $(TOPDIR)/RTOS/FreeRTOS
+
+# source directories (all *.c, *.cpp and *.S files included)
+DIRS	+= $(FREERTOS_DIR)
+INCLUDES += -I$(FREERTOS_DIR)/include
+
+ifeq ($(MCU),cortex-m3)
+	INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3
+	DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM3
+else
+	ifdef HARD_FLOAT
+		INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM4F
+		DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM4F
+	else
+		INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3
+		DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM3
+	endif
+endif
+

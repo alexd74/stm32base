@@ -1,0 +1,11 @@
+INCLUDES += -I$(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/inc
+
+# TODO
+ifeq ($(BOARD),DISCOVERY_VL)
+	LIBS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/STM32F10x_StdPeriphLibVL.a
+else
+	LIBS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/STM32F10x_StdPeriphLibCL.a
+endif
+
+BASEFLAGS += -include stm32f10x_conf.h
+

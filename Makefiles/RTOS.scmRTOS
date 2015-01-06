@@ -1,0 +1,16 @@
+# scmRTOS dir
+SCMDIR		= $(TOPDIR)/RTOS/scmRTOS
+
+# source directories (all *.c, *.cpp and *.S files included)
+DIRS	+= $(SCMDIR)/Common
+DIRS	+= $(SCMDIR)/Extensions/Profiler
+
+INCLUDES += -I$(SCMDIR)/Common
+INCLUDES += -I$(SCMDIR)/Extensions/Profiler
+INCLUDES += -I$(SCMDIR)/pin
+
+DIRS	+= $(SCMDIR)/CortexM4F
+INCLUDES += -I$(SCMDIR)/CortexM4F
+
+BASEFLAGS += -DPendSVC_ISR=PendSV_Handler
+BASEFLAGS += -DDefault_SystemTimer_ISR=SysTick_Handler

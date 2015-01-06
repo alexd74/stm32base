@@ -1,0 +1,10 @@
+ifeq ($(MCU),cortex-m3)
+else
+	INCLUDES += -I$(TOPDIR)/Libraries/STM32_USB_Device_Library/Core/inc
+	INCLUDES += -I$(TOPDIR)/Libraries/STM32_USB_OTG_Driver/inc
+
+	VPATH += $(TOPDIR)/Libraries/STM32_USB_Device_Library/Class/hid/src
+	VPATH += $(TOPDIR)/Libraries/STM32_USB_Device_Library/Core/src
+	VPATH += $(TOPDIR)/Libraries/STM32_USB_OTG_Driver/src
+endif
+

@@ -180,82 +180,15 @@ CXXWARNINGS	= -Winline -finline-limit=40
 BASEFLAGS = $(FLAGS)
 
 ifdef USE_STM_PERIF_LIB
-	ifeq ($(MCU),cortex-m3)
-		INCLUDES += -I$(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/inc
-
-		ifeq ($(BOARD),DISCOVERY_VL)
-			LIBS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/STM32F10x_StdPeriphLibVL.a
-		else
-			LIBS += $(TOPDIR)/Libraries/STM32F10x_StdPeriph_Driver/STM32F10x_StdPeriphLibCL.a
-		endif
-
-		BASEFLAGS += -include stm32f10x_conf.h
-	else
-		INCLUDES += -I$(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/inc
-#		DIRS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/src
-		ifdef HARD_FLOAT
-			LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibHard.a
-		else
-			LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibSoft.a
-		endif
-
-		BASEFLAGS += -include stm32f4xx_conf.h
-	endif
+	include $(TOPDIR)/Makefiles/STM_PERIF_LIB.$(MCU)
 endif
 
 ifdef USE_USB
-	ifeq ($(MCU),cortex-m3)
-	else
-		INCLUDES += -I$(TOPDIR)/Libraries/STM32_USB_Device_Library/Core/inc
-		INCLUDES += -I$(TOPDIR)/Libraries/STM32_USB_OTG_Driver/inc
-
-		VPATH += $(TOPDIR)/Libraries/STM32_USB_Device_Library/Class/hid/src
-		VPATH += $(TOPDIR)/Libraries/STM32_USB_Device_Library/Core/src
-		VPATH += $(TOPDIR)/Libraries/STM32_USB_OTG_Driver/src
-	endif
+	include $(TOPDIR)/Makefiles/USB
 endif
 
 ifdef RTOS
-	ifeq ($(RTOS),scmRTOS)
-		# scmRTOS dir
-		SCMDIR		= $(TOPDIR)/RTOS/scmRTOS
-
-		# source directories (all *.c, *.cpp and *.S files included)
-		DIRS	+= $(SCMDIR)/Common
-		DIRS	+= $(SCMDIR)/Extensions/Profiler
-
-		INCLUDES += -I$(SCMDIR)/Common
-		INCLUDES += -I$(SCMDIR)/Extensions/Profiler
-		INCLUDES += -I$(SCMDIR)/pin
-
-		DIRS	+= $(SCMDIR)/CortexM4F
-		INCLUDES += -I$(SCMDIR)/CortexM4F
-
-		BASEFLAGS += -DPendSVC_ISR=PendSV_Handler
-		BASEFLAGS += -DDefault_SystemTimer_ISR=SysTick_Handler
-	endif
-
-	ifeq ($(RTOS),FreeRTOS)
-		# FreeRTOS dir
-		FREERTOS_DIR		= $(TOPDIR)/RTOS/FreeRTOS
-
-		# source directories (all *.c, *.cpp and *.S files included)
-		DIRS	+= $(FREERTOS_DIR)
-		INCLUDES += -I$(FREERTOS_DIR)/include
-
-		ifeq ($(MCU),cortex-m3)
-			INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3
-			DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM3
-		else
-			ifdef HARD_FLOAT
-				INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM4F
-				DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM4F
-			else
-				INCLUDES += -I$(FREERTOS_DIR)/portable/GCC/ARM_CM3
-				DIRS	+= $(FREERTOS_DIR)/portable/GCC/ARM_CM3
-			endif
-		endif
-	endif
+	include $(TOPDIR)/Makefiles/RTOS.$(RTOS)
 endif
 
 # linker script (chip dependent)

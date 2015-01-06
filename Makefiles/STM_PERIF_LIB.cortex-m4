@@ -1,0 +1,10 @@
+INCLUDES += -I$(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/inc
+
+ifdef HARD_FLOAT
+	LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibHard.a
+else
+	LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibSoft.a
+endif
+
+BASEFLAGS += -include stm32f4xx_conf.h
+
