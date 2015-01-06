@@ -2,33 +2,32 @@
   ******************************************************************************
   * @file    stm32f4xx_cryp_tdes.c
   * @author  MCD Application Team
-  * @version V1.0.2
-  * @date    05-March-2012
-  * @brief   This file provides high level functions to encrypt and decrypt an 
+  * @version V1.4.0
+  * @date    04-August-2014
+  * @brief   This file provides high level functions to encrypt and decrypt an
   *          input message using TDES in ECB/CBC modes .
   *          It uses the stm32f4xx_cryp.c/.h drivers to access the STM32F4xx CRYP
   *          peripheral.
   *
-  *  @verbatim
-  *
-  *          ===================================================================
-  *                                   How to use this driver
-  *          ===================================================================
-  *          1. Enable The CRYP controller clock using 
-  *            RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_CRYP, ENABLE); function.
-  *
-  *          2. Encrypt and decrypt using TDES in ECB Mode using CRYP_TDES_ECB()
-  *             function.
-  *
-  *          3. Encrypt and decrypt using TDES in CBC Mode using CRYP_TDES_CBC()
-  *             function.
-  *
-  *  @endverbatim
+@verbatim
+
+ ===============================================================================
+                           ##### How to use this driver #####
+ ===============================================================================
+ [..]
+   (#) Enable The CRYP controller clock using
+       RCC_AHB2PeriphClockCmd(RCC_AHB2Periph_CRYP, ENABLE); function.
+
+   (#) Encrypt and decrypt using TDES in ECB Mode using CRYP_TDES_ECB() function.
+
+   (#) Encrypt and decrypt using TDES in CBC Mode using CRYP_TDES_CBC() function.
+
+@endverbatim
   *
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -36,14 +35,14 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_cryp.h"
@@ -53,7 +52,7 @@
   * @{
   */
 
-/** @defgroup CRYP 
+/** @defgroup CRYP
   * @brief CRYP driver modules
   * @{
   */
@@ -70,16 +69,15 @@
 
 /** @defgroup CRYP_Private_Functions
   * @{
-  */ 
+  */
 
 /** @defgroup CRYP_Group7 High Level TDES functions
- *  @brief   High Level TDES functions 
+ *  @brief   High Level TDES functions
  *
-@verbatim   
+@verbatim
  ===============================================================================
-                          High Level TDES functions
+                      ##### High Level TDES functions #####
  ===============================================================================
-
 
 @endverbatim
   * @{
@@ -99,7 +97,7 @@
   *          - SUCCESS: Operation done
   *          - ERROR: Operation failed
   */
-ErrorStatus CRYP_TDES_ECB(uint8_t Mode, uint8_t Key[24], uint8_t *Input, 
+ErrorStatus CRYP_TDES_ECB(uint8_t Mode, uint8_t Key[24], uint8_t *Input,
                           uint32_t Ilength, uint8_t *Output)
 {
   CRYP_InitTypeDef TDES_CRYP_InitStructure;
@@ -149,6 +147,12 @@ ErrorStatus CRYP_TDES_ECB(uint8_t Mode, uint8_t Key[24], uint8_t *Input,
   /* Enable Crypto processor */
   CRYP_Cmd(ENABLE);
 
+  if(CRYP_GetCmdStatus() == DISABLE)
+  {
+    /* The CRYP peripheral clock is not enabled or the device doesn't embedd
+       the CRYP peripheral (please check the device sales type. */
+    return(ERROR);
+  }
   for(i=0; ((i<Ilength) && (status != ERROR)); i+=8)
   {
     /* Write the Input block in the Input FIFO */
@@ -183,7 +187,7 @@ ErrorStatus CRYP_TDES_ECB(uint8_t Mode, uint8_t Key[24], uint8_t *Input,
   /* Disable Crypto */
   CRYP_Cmd(DISABLE);
 
-  return status; 
+  return status;
 }
 
 /**
@@ -259,6 +263,13 @@ ErrorStatus CRYP_TDES_CBC(uint8_t Mode, uint8_t Key[24], uint8_t InitVectors[8],
   /* Enable Crypto processor */
   CRYP_Cmd(ENABLE);
 
+  if(CRYP_GetCmdStatus() == DISABLE)
+  {
+    /* The CRYP peripheral clock is not enabled or the device doesn't embedd
+       the CRYP peripheral (please check the device sales type. */
+    return(ERROR);
+  }
+
   for(i=0; ((i<Ilength) && (status != ERROR)); i+=8)
   {
     /* Write the Input block in the Input FIFO */
@@ -293,22 +304,22 @@ ErrorStatus CRYP_TDES_CBC(uint8_t Mode, uint8_t Key[24], uint8_t InitVectors[8],
   /* Disable Crypto */
   CRYP_Cmd(DISABLE);
 
-  return status; 
+  return status;
 }
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

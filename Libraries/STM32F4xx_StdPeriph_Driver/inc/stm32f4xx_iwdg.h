@@ -2,14 +2,14 @@
   ******************************************************************************
   * @file    stm32f4xx_iwdg.h
   * @author  MCD Application Team
-  * @version V1.0.2
-  * @date    05-March-2012
-  * @brief   This file contains all the functions prototypes for the IWDG 
+  * @version V1.4.0
+  * @date    04-August-2014
+  * @brief   This file contains all the functions prototypes for the IWDG
   *          firmware library.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2012 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
@@ -51,7 +51,7 @@
 /** @defgroup IWDG_Exported_Constants
   * @{
   */
-  
+
 /** @defgroup IWDG_WriteAccess
   * @{
   */
@@ -63,7 +63,7 @@
   * @}
   */
 
-/** @defgroup IWDG_prescaler 
+/** @defgroup IWDG_prescaler
   * @{
   */
 #define IWDG_Prescaler_4            ((uint8_t)0x00)
@@ -84,7 +84,7 @@
   * @}
   */
 
-/** @defgroup IWDG_Flag 
+/** @defgroup IWDG_Flag
   * @{
   */
 #define IWDG_FLAG_PVU               ((uint16_t)0x0001)
