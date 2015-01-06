@@ -14,7 +14,7 @@
 #ifndef PIN_H_INCLUDED
 #define PIN_H_INCLUDED
 
-#if (defined STM32F2XX) || (defined STM32F4XX)
+#if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (STM32F401xx) || defined (STM32F411xE)
 #  include "pin_stm32F4xx.h"
 #else
 #  include "pin_stm32F1xx.h"

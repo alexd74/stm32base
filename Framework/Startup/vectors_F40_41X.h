@@ -19,8 +19,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SO
 
 */
 
-#ifndef VECTORS_F4_H
-#define VECTORS_F4_H
+#ifndef VECTORS_F40_41X_H
+#define VECTORS_F40_41X_H
 
 void WEAK WWDG_IRQHandler(void);
 void WEAK PVD_IRQHandler(void);
@@ -105,7 +105,7 @@ void WEAK CRYP_IRQHandler(void);
 void WEAK HASH_RNG_IRQHandler(void);
 void WEAK FPU_IRQHandler(void);
 
-#endif /* ifndef VECTORS_F4_H */
+#endif /* ifndef VECTORS_F40_41X_H */
 
 /* {{{ Modeline for ViM
  * vim600:fdm=marker fdl=0 fdc=3:

@@ -53,8 +53,8 @@ typedef void( *const intfunc )( void );
 #include "vectors_LD_VL.c"
 #elif defined STM32F10X_CL
 #include "vectors_CL.c"
-#elif defined STM32F4
-#include "vectors_F4.c"
+#elif defined STM32F40_41xxx
+#include "vectors_F40_41X.c"
 #else
 #error "Unknown processor"
 #endif

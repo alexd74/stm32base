@@ -1,6 +1,6 @@
 #ifndef SCM_CUSTOM_INIT
 
-#ifdef STM32F4
+#if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (STM32F401xx) || defined (STM32F411xE)
 #include "stm32f4xx.h"
 #else
 #include "stm32f10x.h"
@@ -10,7 +10,7 @@ void initScmRTOS(void)  __attribute__ ((constructor, used));
 
 void initScmRTOS(void)
 {
-#ifdef STM32F4
+#if defined (STM32F40_41xxx) || defined (STM32F427_437xx) || defined (STM32F429_439xx) || defined (STM32F401xx) || defined (STM32F411xE)
 
 	// enable GPIOx peripherals
 	RCC->AHB1ENR |=
