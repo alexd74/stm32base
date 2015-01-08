@@ -672,7 +672,7 @@ void LCD_DisplayChar(uint16_t Line, uint16_t Column, uint8_t Ascii)
   * @param  *ptr: pointer to string to display on LCD.
   * @retval None
   */
-void LCD_DisplayStringLine(uint16_t Line, uint8_t *ptr)
+void LCD_DisplayStringLine(uint16_t Line, const char *ptr)
 {
   uint16_t refcolumn = 0;
   /* Send the string character by character on lCD */

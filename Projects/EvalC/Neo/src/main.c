@@ -34,22 +34,6 @@
   * @{
   */
 
-/* Private typedef -----------------------------------------------------------*/
-/* Private define ------------------------------------------------------------*/
-#ifdef USE_STM3210B_EVAL
-  #define MESSAGE1   "STM32 Medium Density"
-  #define MESSAGE2   " Device running on  "
-  #define MESSAGE3   "   STM3210B-EVAL    "
-#elif defined USE_STM3210E_EVAL
-  #define MESSAGE1   " STM32 High Density "
-  #define MESSAGE2   " Device running on  "
-  #define MESSAGE3   "   STM3210E-EVAL    "
-#elif defined USE_STM3210C_EVAL
-  #define MESSAGE1   " STM32 Connectivity "
-  #define MESSAGE2   " Line Device running"
-  #define MESSAGE3   " on STM3210C-EVAL   "
-#endif
-
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
  USART_InitTypeDef USART_InitStructure;
@@ -67,21 +51,6 @@ static __IO uint32_t TimingDelay;
 #endif /* __GNUC__ */
 
 void Delay(__IO uint32_t nTime);
-
-/* Private functions ---------------------------------------------------------*/
-
-/**
-  * @brief  Inserts a delay time.
-  * @param  nCount: specifies the delay time length.
-  * @retval None
-  */
-#if 0
-void Delay(__IO uint32_t nCount)
-{
-  nCount *= 10000;
-  for(; nCount != 0; nCount--);
-}
-#endif
 
 
 /**
@@ -142,20 +111,11 @@ int main(void)
   LCD_SetBackColor(Black);
   /* Set the LCD Text Color */
   LCD_SetTextColor(Green);
-  /*
-  LCD_DisplayStringLine(Line0, MESSAGE1);
-  LCD_DisplayStringLine(Line1, MESSAGE2);
-  LCD_DisplayStringLine(Line2, MESSAGE3);
-  */
-//  LCD_DisplayStringLine(Line0, "Testprojekt : 1");
-//  LCD_DisplayStringLine(Line3, "Thomas ist eine Held");
 
   STM_EVAL_LEDOff(LED1);
   STM_EVAL_LEDOff(LED2);
   STM_EVAL_LEDOff(LED3);
   STM_EVAL_LEDOff(LED4);
-
-#if 1
 
   LCD_DisplayStringLine(Line0, "wake up, Neo...");
 
@@ -168,19 +128,6 @@ int main(void)
   LCD_DisplayStringLine(Line5, "  the white rabbit");
 
 
-  /* Retarget the C library printf function to the USARTx, can be USART1 or USART2
-     depending on the EVAL board you are using ********************************/
-/*  printf("\n\r %s", MESSAGE1);*/
-/*  printf(" %s", MESSAGE2);*/
-/*  printf(" %s\n\r", MESSAGE3);*/
-
-  /* Turn on leds available on STM3210X-EVAL **********************************/
-/*  STM_EVAL_LEDOn(LED1);
-  STM_EVAL_LEDOn(LED2);
-  STM_EVAL_LEDOn(LED3);
-  STM_EVAL_LEDOn(LED4);
-*/
-
   Delay(2000);
 
   LCD_DisplayStringLine(Line7, " knock, knock, Neo");
@@ -189,10 +136,6 @@ int main(void)
   STM_EVAL_LEDOn(LED2);
   STM_EVAL_LEDOn(LED3);
   STM_EVAL_LEDOn(LED4);
-
-  /* Add your application code here
-     */
-#endif
 
   while (1)
   {

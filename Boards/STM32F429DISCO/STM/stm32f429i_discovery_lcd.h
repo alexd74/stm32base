@@ -277,7 +277,7 @@ void     LCD_DrawChar(uint16_t Xpos, uint16_t Ypos, const uint16_t *c);
 void     LCD_DisplayChar(uint16_t Line, uint16_t Column, uint8_t Ascii);
 void     LCD_SetFont(sFONT *fonts);
 sFONT *  LCD_GetFont(void);
-void     LCD_DisplayStringLine(uint16_t Line, uint8_t *ptr);
+void     LCD_DisplayStringLine(uint16_t Line, const char *ptr);
 void     LCD_SetDisplayWindow(uint16_t Xpos, uint16_t Ypos, uint16_t Height, uint16_t Width);
 void     LCD_WindowModeDisable(void);
 void     LCD_DrawLine(uint16_t Xpos, uint16_t Ypos, uint16_t Length, uint8_t Direction);
