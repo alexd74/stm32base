@@ -35,7 +35,7 @@
 #define  __LCD_LOG_CONF_H__
 
 /* Includes ------------------------------------------------------------------*/
-#include "stm3210c_eval_lcd.h" /* replace 'stm32xxx' with your EVAL board name, ex: stm3210c_eval_lcd.h */
+#include "stm32xxx_eval_lcd.h" /* replace 'stm32xxx' with your EVAL board name, ex: stm3210c_eval_lcd.h */
 #include <stdio.h>
 
 /** @addtogroup LCD_LOG

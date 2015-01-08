@@ -11,6 +11,7 @@ VPATH += $(TOPDIR)/Boards/STM3210C_EVAL
 
 ifdef USE_STM_PERIF_LIB
   INCLUDES += -I$(TOPDIR)/Boards/STM3210C_EVAL/STM
+  INCLUDES += -I$(TOPDIR)/Boards/Common
   VPATH += $(TOPDIR)/Boards/STM3210C_EVAL/STM
   # individual source files
   SRCS	+= stm3210c_eval.c
