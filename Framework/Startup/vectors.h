@@ -50,6 +50,8 @@ void WEAK SysTick_Handler(void);
 #include "vectors_CL.h"
 #elif defined STM32F40_41xxx
 #include "vectors_F40_41X.h"
+#elif defined STM32F429_439xx
+#include "vectors_F429.h"
 #else
 #error "Unknown processor"
 #endif

@@ -1,0 +1,14 @@
+CHIP = STM32F429_439xx
+MCU	= cortex-m4
+PROJECT_FLAGS += -DHSE_VALUE=8000000
+
+INCLUDES += -I$(TOPDIR)/Boards/STM32F429DISCO
+VPATH += $(TOPDIR)/Boards/STM32F429DISCO
+
+ifdef USE_STM_PERIF_LIB
+	INCLUDES += -I$(TOPDIR)/Boards/STM32F429DISCO/STM
+	VPATH += $(TOPDIR)/Boards/STM32F429DISCO/STM
+	# individual source files
+#	SRCS	+= stm32f4_discovery.c
+	#stm32f4_discovery_audio_codec.c stm32f4_discovery_lis302dl.c
+endif

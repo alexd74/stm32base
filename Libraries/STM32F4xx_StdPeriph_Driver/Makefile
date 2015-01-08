@@ -9,18 +9,26 @@ TOPDIR = ../..
 
 OPTIMIZE	= -O2
 
-BOARD	= DISCOVERY_F4
+MCU	= cortex-m4
+ifndef CHIP
+	CHIP = STM32F429_439xx
+endif
 USE_STM_PERIF_LIB = 1
-#RTOS = scmRTOS
-#START_FROM_RAM = 1
-#HARD_FLOAT = 1
 
 TARGET		= test
 
-ifdef HARD_FLOAT
-	LIBRARY = STM32F4xx_StdPeriphLibHard.a
+ifeq ($(CHIP),STM32F429_439xx)
+	ifdef HARD_FLOAT
+		LIBRARY = STM32F4xx_StdPeriphLibHard429.a
+	else
+		LIBRARY = STM32F4xx_StdPeriphLibSoft429.a
+	endif
 else
-	LIBRARY = STM32F4xx_StdPeriphLibSoft.a
+	ifdef HARD_FLOAT
+		LIBRARY = STM32F4xx_StdPeriphLibHard40x.a
+	else
+		LIBRARY = STM32F4xx_StdPeriphLibSoft40x.a
+	endif
 endif
 
 PROJECT_SRC = src

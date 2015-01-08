@@ -11,10 +11,16 @@ popd
 
 pushd Libraries/STM32F4xx_StdPeriph_Driver/
 
-make
+make CHIP=STM32F429_439xx
 make cleanall
 
-make HARD_FLOAT=1
+make CHIP=STM32F429_439xx HARD_FLOAT=1
+make cleanall
+
+make CHIP=STM32F40_41xxx
+make cleanall
+
+make CHIP=STM32F40_41xxx HARD_FLOAT=1
 make cleanall
 
 popd

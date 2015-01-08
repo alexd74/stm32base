@@ -1,9 +1,17 @@
 INCLUDES += -I$(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/inc
 
-ifdef HARD_FLOAT
-	LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibHard.a
+ifeq ($(CHIP),STM32F429_439xx)
+  ifdef HARD_FLOAT
+    LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibHard429.a
+  else
+    LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibSoft429.a
+  endif
 else
-	LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibSoft.a
+  ifdef HARD_FLOAT
+    LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibHard40x.a
+  else
+    LIBS += $(TOPDIR)/Libraries/STM32F4xx_StdPeriph_Driver/STM32F4xx_StdPeriphLibSoft40x.a
+  endif
 endif
 
 BASEFLAGS += -include stm32f4xx_conf.h
