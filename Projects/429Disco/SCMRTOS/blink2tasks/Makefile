@@ -7,7 +7,7 @@
 
 TOPDIR = ../../../..
 
-BOARD	= DISCOVERY_F4
+BOARD	= 429DISCO
 
 #USE_STM_PERIF_LIB = 1
 RTOS = scmRTOS
