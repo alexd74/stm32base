@@ -196,6 +196,7 @@ ifeq ($(START_FROM_RAM),1)
 	BASEFLAGS += -DVECT_TAB_SRAM
 	LD_SCRIPT	= $(RESOURCEDIR)/$(CHIP)_RAM.ld
 else
+#	LD_SCRIPT	= $(RESOURCEDIR)/STM32COMMON.ld
 	LD_SCRIPT	= $(RESOURCEDIR)/$(CHIP).ld
 endif
 
@@ -259,9 +260,16 @@ LD_FLAGS	+= -mcpu=$(MCU)  -mthumb -mthumb-interwork
 endif
 
 LD_FLAGS	+= $(PROJECT_LDFLAGS)
+
+ifdef STACK_SIZE 
+LD_FLAGS	+=  -Wl,--defsym=STACK_SIZE=$(STACK_SIZE)
+endif
+
 LD_FLAGS	+= -Wl,-Map="$(MAP)",--cref
 LD_FLAGS	+= -fno-exceptions -fno-rtti	
 LD_FLAGS	+= -Wl,--gc-sections
+LD_FLAGS	+= -L$(RESOURCEDIR)
+#LD_FLAGS  += -Wl,--defsym=CHIP=$(CHIP)
 LD_FLAGS	+= -T$(LD_SCRIPT)
 
 include $(TOPDIR)/Makefiles/Makefile.targets
