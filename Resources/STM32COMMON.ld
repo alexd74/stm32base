@@ -2,12 +2,6 @@
 * linker script for ST32F100  microcontroller
 ************************************************/ 
 
-
-/*
-CHIP = DEFINED(CHIP) ? CHIP : STM32F10X_LD_VL.ld ;
-INCLUDE $(CHIP)
-*/
-
 ENTRY(Reset_Handler)
 
 HEAP_SIZE = DEFINED(HEAP_SIZE) ? HEAP_SIZE : 0 ;

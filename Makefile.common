@@ -191,18 +191,10 @@ ifdef RTOS
 	include $(TOPDIR)/Makefiles/RTOS.$(RTOS)
 endif
 
-# linker script (chip dependent)
 ifeq ($(START_FROM_RAM),1)
 	BASEFLAGS += -DVECT_TAB_SRAM
-	LD_SCRIPT	= $(RESOURCEDIR)/$(CHIP)_RAM.ld
-else
-#	LD_SCRIPT	= $(RESOURCEDIR)/STM32COMMON.ld
-	LD_SCRIPT	= $(RESOURCEDIR)/$(CHIP).ld
 endif
 
-ifdef PROJECT_LD
-	LD_SCRIPT = $(PROJECT_LD)
-endif
 
 ifdef LIBRARY
 	SRCS =
@@ -273,7 +265,23 @@ LD_FLAGS	+= -Wl,-Map="$(MAP)",--cref
 LD_FLAGS	+= -fno-exceptions -fno-rtti	
 LD_FLAGS	+= -Wl,--gc-sections
 LD_FLAGS	+= -L$(RESOURCEDIR)
-#LD_FLAGS  += -Wl,--defsym=CHIP=$(CHIP)
-LD_FLAGS	+= -T$(LD_SCRIPT)
+
+#LD_FLAGS	+= -T$(LD_SCRIPT)
+#LD_FLAGS	+= -T$(RESOURCEDIR)/STM32COMMON.ld                                
+
+ifdef PROJECT_LD
+LD_FLAGS	+= -T$(PROJECT_LD)
+else
+	# linker script (chip dependent)
+	LD_FLAGS	+= -T$(RESOURCEDIR)/$(CHIP).ld
+
+	ifeq ($(START_FROM_RAM),1)
+		LD_FLAGS	+= -T$(RESOURCEDIR)/STM32COMMON_RAM.ld
+	else
+		LD_FLAGS	+= -T$(RESOURCEDIR)/STM32COMMON.ld
+	endif
+endif
+
+
 
 include $(TOPDIR)/Makefiles/Makefile.targets
