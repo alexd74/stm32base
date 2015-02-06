@@ -11,7 +11,7 @@ TOPDIR = ../../..
 #TOOL	= /opt/Sourcery_gcc-4.5.2/bin/arm-none-eabi-
 #TOOL	= /opt/Sourcery_gcc-4.6.3/bin/arm-none-eabi-
 #TOOL	= /opt/Sourcery_gcc-4.7.2/bin/arm-none-eabi-
-#TOOL	= /opt/arm-none-eabi/bin/arm-none-eabi-
+#TOOL	= /opt/gcc-arm-none-eabi-4_8-2014q3/bin/arm-none-eabi-
 
 BOARD	= STM3210C
 
@@ -19,8 +19,10 @@ BOARD	= STM3210C
 #USE_USB = 1
 #RTOS = scmRTOS
 START_FROM_RAM = 1
-USART_RETARGET = MINI
-#USART_RETARGET = NEWLIB
+#USART_RETARGET = MINI
+USART_RETARGET = NEWLIB
+STACK_SIZE = 0x300
+HEAP_SIZE = 5K
 
 TARGET		= printf_test
 OPTIMIZE	= -O2

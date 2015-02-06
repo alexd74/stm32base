@@ -3,6 +3,8 @@
  *
  *  Created on: 2 Nov 2010
  *      Author: nanoage.co.uk
+ *
+ * _sbrk changed by Alexey Dyachenko 2015
  */
 #include <errno.h>
 #include <sys/stat.h>
@@ -159,7 +161,8 @@ int _lseek( int file, int ptr, int dir )
   return 0;
 }
 
-extern char _ebss;                           // Defined by the linker
+extern char _heap;                           // Defined by the linker
+extern char _eheap;                          // Defined by the linker
 
 /*
    sbrk
@@ -170,14 +173,15 @@ caddr_t _sbrk( int incr )
 {
   static char *heap_end;
   char      *prev_heap_end;
+
   if( heap_end == 0 )
   {
-    heap_end = &_ebss;
+    heap_end = &_heap;
   }
-  prev_heap_end = heap_end;
-  char    *stack = ( char * ) __get_MSP(  );
-  if( heap_end + incr > stack )
 
+  prev_heap_end = heap_end;
+
+  if( heap_end + incr > &_eheap )
   {
 
     // _write (STDERR_FILENO, "Heap and stack collision\n", 25);
@@ -186,7 +190,9 @@ caddr_t _sbrk( int incr )
 
     //abort ();
   }
+
   heap_end += incr;
+
   return ( caddr_t ) prev_heap_end;
 }
 

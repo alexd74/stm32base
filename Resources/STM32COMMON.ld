@@ -10,6 +10,7 @@ INCLUDE $(CHIP)
 
 ENTRY(Reset_Handler)
 
+HEAP_SIZE = DEFINED(HEAP_SIZE) ? HEAP_SIZE : 0 ;
 STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : 0x200 ;
 
 /* higher address of the user mode stack */
@@ -88,25 +89,32 @@ SECTIONS
 		_ebss = .;				/* end of .bss label (for startup) */
 		_end = .;				/* end of used ram (start of free memory, for malloc) */
 		__end = .;				/* the same */
+    end = .;
 	} > RAM
+
+  .heap :
+  {
+		. = ALIGN(4);
+    _heap = .;
+    . = . + HEAP_SIZE;
+    . = ALIGN(4);
+    _eheap = .;
+  } >RAM
 
 /*
  * This is the user stack section
  * This is just to check that there is enough RAM left for the User mode stack
  * It should generate an error if it's full.
  */
-    ._usrstack :
-    {
-	    . = ALIGN(4);
-      _susrstack = . ;
-      . = . + STACK_SIZE ;
-      . = ALIGN(4);
-      _eusrstack = . ;
-    } >RAM
+  ._usrstack :
+  {
+    . = ALIGN(4);
+    _susrstack = . ;
+    . = . + STACK_SIZE ;
+    . = ALIGN(4);
+    _eusrstack = . ;
+  } >RAM
 
-
-PROVIDE( _heap = _ebss );
-PROVIDE ( _eheap = ALIGN(ORIGIN(RAM) + LENGTH(RAM) - 8 ,8) );
 
 /*
  * after that it's only debugging information.

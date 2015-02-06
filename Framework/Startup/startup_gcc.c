@@ -49,7 +49,6 @@ void SystemInit(void);
 #ifdef USE_SIMULATOR
 void _exit(int status);
 #endif
-unsigned long end;
 
 void Reset_Handler(void)
 {
@@ -67,8 +66,6 @@ void Reset_Handler(void)
 void __Init_Data(void)
 {
   unsigned long *pulSrc, *pulDest;
-
-  end = _eheap;
 
   pulSrc = &_sidata;
 

@@ -265,6 +265,10 @@ ifdef STACK_SIZE
 LD_FLAGS	+=  -Wl,--defsym=STACK_SIZE=$(STACK_SIZE)
 endif
 
+ifdef HEAP_SIZE 
+LD_FLAGS	+=  -Wl,--defsym=HEAP_SIZE=$(HEAP_SIZE)
+endif
+
 LD_FLAGS	+= -Wl,-Map="$(MAP)",--cref
 LD_FLAGS	+= -fno-exceptions -fno-rtti	
 LD_FLAGS	+= -Wl,--gc-sections
