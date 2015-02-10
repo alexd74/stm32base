@@ -5,6 +5,7 @@
  *      Author: nanoage.co.uk
  *
  * _sbrk changed by Alexey Dyachenko 2015
+ * see http://sourceware.org/ for details
  */
 #include <errno.h>
 #include <sys/stat.h>
@@ -161,39 +162,42 @@ int _lseek( int file, int ptr, int dir )
   return 0;
 }
 
-extern char _heap;                           // Defined by the linker
-extern char _eheap;                          // Defined by the linker
+extern unsigned int _heap;                           // Defined by the linker
+extern unsigned int _eheap;                          // Defined by the linker
+static caddr_t heap = NULL;
 
 /*
    sbrk
    Increase program data space.
    Malloc and related functions depend on this
  */
-caddr_t _sbrk( int incr )
+caddr_t _sbrk(int incr)
 {
-  static char *heap_end;
-  char      *prev_heap_end;
+	caddr_t prevHeap;
+	caddr_t nextHeap;
 
-  if( heap_end == 0 )
-  {
-    heap_end = &_heap;
-  }
+	if (heap == NULL)
+	{ // first allocation
+		heap = (caddr_t) & _heap;
+	}
 
-  prev_heap_end = heap_end;
+	prevHeap = heap;
 
-  if( heap_end + incr > &_eheap )
-  {
+	// Always return data aligned on a 8 byte boundary
+	nextHeap = (caddr_t) (((unsigned int) (heap + incr) + 7) & ~7);
 
-    // _write (STDERR_FILENO, "Heap and stack collision\n", 25);
-    errno = ENOMEM;
+	// Check enough space and there is no collision with stack coming the other way
+	// if stack is above start of heap
+	if (nextHeap >= (caddr_t) & _eheap)
+	{
+		errno = ENOMEM; // error - no more memory
     return ( caddr_t ) - 1;
-
-    //abort ();
-  }
-
-  heap_end += incr;
-
-  return ( caddr_t ) prev_heap_end;
+	}
+	else
+	{
+		heap = nextHeap;
+		return (caddr_t) prevHeap;
+	}
 }
 
 

@@ -236,7 +236,7 @@ CFLAGS	+= -Wa,-adhlns=$(addprefix $(LSTDIR)/, $(notdir $(addsuffix .lst, $(basen
 CXXFLAGS	= $(BASEFLAGS)  $(BOARD_FLAGS)
 CXXFLAGS	+= $(OPTIMIZE)
 CXXFLAGS	+= -fomit-frame-pointer
-CXXFLAGS	+= -fno-exceptions -fno-rtti
+CXXFLAGS	+= -fno-exceptions -fno-rtti -fcheck-new
 CXXFLAGS	+= -ffunction-sections -fdata-sections
 CXXFLAGS	+= -fno-elide-constructors
 CXXFLAGS	+= -funsigned-bitfields -fshort-enums
